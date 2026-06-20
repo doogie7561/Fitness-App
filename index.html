@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fitness Coach</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="./icon.png">
+<link rel="icon" href="./icon.png">
+<style>
+:root{
+  --bg:#0b1020;--panel:#121a2f;--panel2:#18213a;--text:#f8fafc;--muted:#cbd5e1;--blue:#2563eb;--cyan:#38bdf8;--good:#22c55e;--warn:#f59e0b;--danger:#ef4444;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#080d19,#0b1020);color:var(--text)}
+.app-header{padding:1rem 1rem .6rem}
+.app-header h1{margin:.25rem 0;font-size:2rem;letter-spacing:.2px}
+#headerSubtext{margin:0;color:var(--muted)}
+.app-nav{display:flex;gap:.4rem;flex-wrap:wrap;padding:.75rem;position:sticky;top:0;z-index:50;background:rgba(11,16,32,.96);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.1)}
+button,.fileLabel{border:1px solid rgba(255,255,255,.16);background:var(--blue);color:white;border-radius:.75rem;padding:.72rem .9rem;font:inherit;cursor:pointer}
+button.ghost{background:rgba(255,255,255,.08)}
+button.active{outline:2px solid var(--cyan)}
+button.dangerButton{background:#991b1b}
+.tab{display:none}
+.tab.active{display:block}
+.panel{padding:1rem;margin:1rem;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.055)}
+.muted{color:var(--muted)}
+.formGrid,.today-grid,.character-grid,.goal-grid,.supplement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.75rem}
+input,select{width:100%;border-radius:.6rem;border:1px solid rgba(255,255,255,.18);padding:.7rem;background:#111827;color:white}
+label{display:block;margin:.4rem 0}
+.resultBox,.goal-summary,.stat-card,.codex-card,.achievement-card{border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:.9rem;background:rgba(255,255,255,.04);margin:.5rem 0}
+.character-hero{background:linear-gradient(135deg,rgba(37,99,235,.28),rgba(56,189,248,.10),rgba(255,255,255,.04));border:1px solid rgba(56,189,248,.35)}
+.character-title{font-size:1.45rem;font-weight:800;margin:.25rem 0}
+.character-subtitle{font-size:1.05rem;color:var(--muted)}
+.powerbar{height:12px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;margin:.6rem 0}
+.powerbar div{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));width:0%}
+.setup-callout{border:2px solid rgba(56,189,248,.6);background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(255,255,255,.05))}
+.rpg-wizard{position:fixed;inset:0;z-index:9999;overflow:auto;background:#080d19;color:white;padding:1rem}
+.rpg-wizard.hidden{display:none}
+.rpg-step{display:none;max-width:850px;margin:1rem auto;padding:1rem;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.06)}
+.rpg-step.active{display:block}
+.rpg-progress{max-width:850px;height:10px;margin:1rem auto;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}
+.rpg-progress div{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.choiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:.75rem;margin:1rem 0}
+.choiceList{display:grid;gap:.75rem;margin:1rem 0}
+.choiceGrid button,.choiceList button{text-align:left;min-height:72px;background:rgba(255,255,255,.08)}
+.choiceGrid button.selected,.choiceList button.selected{border-color:var(--cyan);background:rgba(37,99,235,.38)}
+.checkboxGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.55rem;margin:.75rem 0}
+.checkboxGrid label{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:.65rem;background:rgba(255,255,255,.045)}
+.helpText{font-size:.88rem;margin-top:-.25rem}
+.badge{display:inline-block;padding:.22rem .55rem;border-radius:999px;background:rgba(56,189,248,.16);border:1px solid rgba(56,189,248,.35);font-size:.85rem;margin:.12rem}
+.achievement-card.locked{opacity:.55}
+.achievement-card.unlocked{border-color:rgba(34,197,94,.45)}
+.fileLabel input{display:none}
+</style>
+</head>
+<body>
+<header class="app-header">
+  <h1 id="appTitle">Fitness Coach</h1>
+  <p id="headerSubtext">RPG-powered workout, nutrition, recovery, and progress coach.</p>
+</header>
+
+<nav class="app-nav">
+  <button data-tab="today" class="active">Today</button>
+  <button data-tab="assessment">Initial Assessment</button>
+  <button data-tab="character">Character</button>
+  <button data-tab="codex">Codex</button>
+  <button data-tab="achievements">Achievements</button>
+  <button data-tab="coach">Workout Coach</button>
+  <button data-tab="pain">Pain</button>
+  <button data-tab="supplements">Supplements</button>
+  <button data-tab="backup">Backup</button>
+</nav>
+
+<main>
+<section id="today" class="tab active">
+  <div class="panel character-hero">
+    <h2>Your Character</h2>
+    <div id="dashboardCharacter"></div>
+  </div>
+  <div class="panel today-dashboard">
+    <h2>Today</h2>
+    <div class="goal-summary">
+      <strong id="goalWeightHeader">Goal Weight</strong>
+      <p id="goalProgressHeader" class="muted">Complete the Initial Assessment to personalize your goal.</p>
+    </div>
+    <div class="today-grid">
+      <div><strong id="todayDayName">Loading...</strong><p id="todayDateText" class="muted"></p><p id="todayTimeText" class="muted"></p></div>
+      <div><strong>Today's Plan</strong><p id="todayWorkoutText" class="muted"></p><p id="todayWorkoutStatus" class="muted"></p></div>
+      <div><strong>Next Action</strong><p id="todayNextAction" class="muted"></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="assessment" class="tab">
+  <div id="visibleProfileSetupCard" class="panel setup-callout">
+    <h2>Start Your Personalized Fitness Profile</h2>
+    <p>This setup collects goals, assessment data, injury flags, and activity level. Your RPG character is assigned automatically.</p>
+    <button id="openVisibleRpgSetup">Start Profile Setup</button>
+    <button id="showCurrentProfile" class="ghost">Show Current Profile</button>
+    <div id="currentProfilePreview" class="muted"></div>
+  </div>
+</section>
+
+<section id="character" class="tab">
+  <div class="panel character-hero">
+    <h2>Character System</h2>
+    <div id="characterDetail"></div>
+    <button id="recalculateCharacter">Recalculate Character</button>
+    <button id="openCharacterSetup" class="ghost">Retake Setup</button>
+  </div>
+</section>
+
+<section id="codex" class="tab">
+  <div class="panel">
+    <h2>Character Codex</h2>
+    <p class="muted">Your archetype explains how you train, your specialization explains what you train for, and your trait explains how the coach prioritizes decisions.</p>
+    <div id="codexContent"></div>
+  </div>
+</section>
+
+<section id="achievements" class="tab">
+  <div class="panel">
+    <h2>Power Score & Achievements</h2>
+    <div id="powerScorePanel"></div>
+    <div id="achievementList"></div>
+  </div>
+</section>
+
+<section id="coach" class="tab">
+  <div class="panel">
+    <h2>Workout Coach</h2>
+    <p class="muted" id="characterWorkoutGuidance">Complete your setup to receive character-based workout guidance.</p>
+    <button id="markWorkoutComplete">Mark Today’s Workout Complete</button>
+    <div id="coachStatus" class="resultBox"></div>
+  </div>
+</section>
+
+<section id="pain" class="tab">
+  <div class="panel">
+    <h2>Unusual Pain & Safety Tracker</h2>
+    <div class="formGrid">
+      <label>Location <select id="painLocation"><option>Shoulder</option><option>Elbow</option><option>Wrist</option><option>Back</option><option>Hip</option><option>Knee</option><option>Ankle</option><option>Chest</option><option>Head</option><option>Other</option></select></label>
+      <label>Type <select id="painType"><option>Sharp</option><option>Dull</option><option>Burning</option><option>Tingling</option><option>Numbness</option><option>Pressure</option><option>Cramping</option></select></label>
+      <label>Severity 1-10 <input id="painSeverity" type="number" min="1" max="10"></label>
+      <label>Exercise <input id="painExercise" placeholder="Exercise name"></label>
+    </div>
+    <label><input id="painDizzy" type="checkbox"> Dizziness</label>
+    <label><input id="painBreath" type="checkbox"> Shortness of breath</label>
+    <label><input id="painRadiating" type="checkbox"> Radiating pain / numbness / loss of strength</label>
+    <button id="savePainLog">Save Pain Log</button>
+    <div id="painRecommendation" class="resultBox"></div>
+  </div>
+</section>
+
+<section id="supplements" class="tab">
+  <div class="panel">
+    <h2>Supplement Coach</h2>
+    <div class="supplement-grid">
+      <div><strong>Creatine</strong><p>5g daily.</p></div>
+      <div><strong>Protein</strong><p>Use protein powder as needed to reach your daily target.</p></div>
+      <div><strong>Pre-workout</strong><p>Optional 20–30 minutes before training.</p></div>
+      <div><strong>Hydration</strong><p>Electrolytes if sweating heavily.</p></div>
+    </div>
+    <button id="logSupplementsToday">Log Today’s Supplements</button>
+    <div id="supplementStatus" class="resultBox"></div>
+  </div>
+</section>
+
+<section id="backup" class="tab">
+  <div class="panel">
+    <h2>Backup & Data</h2>
+    <button id="exportJson">Export Full Backup</button>
+    <label class="fileLabel">Import Backup <input id="importJson" type="file" accept=".json,application/json"></label>
+    <button id="resetData" class="dangerButton">Reset Local Data</button>
+    <p class="muted">Data is stored locally on this device/browser unless you export a backup.</p>
+  </div>
+</section>
+</main>
+
+<div id="rpgWizard" class="rpg-wizard hidden">
+  <div class="rpg-progress"><div id="rpgProgressBar"></div></div>
+
+  <div class="rpg-step active" data-rpg-step="0">
+    <h2>Build Your Fitness Character</h2>
+    <p>Your goals and assessment results will determine your archetype, specialization, and trait.</p>
+    <button data-rpg-next>Start</button>
+  </div>
+
+  <div class="rpg-step" data-rpg-step="1">
+    <h2>Basic Info</h2>
+    <div class="formGrid">
+      <label>Name <input id="rpgName"></label>
+      <label>Age <input id="rpgAge" type="number"></label>
+      <label>Height Feet <input id="rpgFeet" type="number"></label>
+      <label>Height Inches <input id="rpgInches" type="number"></label>
+      <label>Current Weight <input id="rpgWeight" type="number"></label>
+      <label>Goal Weight <input id="rpgGoalWeight" type="number"></label>
+      <label>Activity Level <select id="rpgActivity"><option value="sedentary">Sedentary</option><option value="light">Lightly Active</option><option value="moderate">Moderately Active</option><option value="high">Very Active</option></select></label>
+    </div>
+    <button data-rpg-prev>Back</button><button data-rpg-next>Next</button>
+  </div>
+
+  <div class="rpg-step" data-rpg-step="2">
+    <h2>Select Your Goals</h2>
+    <p class="muted">Choose every goal that matters. The app uses these to assign your character and shape future workouts.</p>
+    <h3>Body Composition</h3>
+    <div class="checkboxGrid">
+      <label><input type="checkbox" data-goal value="lose_weight"> Lose Weight</label>
+      <label><input type="checkbox" data-goal value="burn_fat"> Burn Fat</label>
+      <label><input type="checkbox" data-goal value="build_muscle"> Build Muscle</label>
+      <label><input type="checkbox" data-goal value="tone_define"> Tone/Define Muscles</label>
+      <label><input type="checkbox" data-goal value="body_recomp"> Improve Body Composition</label>
+      <label><input type="checkbox" data-goal value="reach_goal_weight"> Reach Goal Weight</label>
+      <label><input type="checkbox" data-goal value="look_better_naked"> Look Better Naked</label>
+    </div>
+    <h3>Strength</h3>
+    <div class="checkboxGrid">
+      <label><input type="checkbox" data-goal value="get_stronger"> Get Stronger</label>
+      <label><input type="checkbox" data-goal value="upper_strength"> Increase Upper Body Strength</label>
+      <label><input type="checkbox" data-goal value="lower_strength"> Increase Lower Body Strength</label>
+      <label><input type="checkbox" data-goal value="grip_strength"> Improve Grip Strength</label>
+    </div>
+    <h3>Fitness, Health, Performance, Lifestyle</h3>
+    <div class="checkboxGrid">
+      <label><input type="checkbox" data-goal value="cardio"> Improve Cardiovascular Fitness</label>
+      <label><input type="checkbox" data-goal value="endurance"> Improve Endurance</label>
+      <label><input type="checkbox" data-goal value="stamina"> Improve Stamina</label>
+      <label><input type="checkbox" data-goal value="energy"> Increase Daily Energy</label>
+      <label><input type="checkbox" data-goal value="flexibility"> Improve Flexibility</label>
+      <label><input type="checkbox" data-goal value="mobility"> Improve Mobility</label>
+      <label><input type="checkbox" data-goal value="joint_pain"> Reduce Joint Pain</label>
+      <label><input type="checkbox" data-goal value="injury_recovery"> Recover From Injury</label>
+      <label><input type="checkbox" data-goal value="balance"> Improve Balance</label>
+      <label><input type="checkbox" data-goal value="blood_pressure"> Lower Blood Pressure</label>
+      <label><input type="checkbox" data-goal value="heart_health"> Improve Heart Health</label>
+      <label><input type="checkbox" data-goal value="sleep"> Improve Sleep</label>
+      <label><input type="checkbox" data-goal value="stress"> Reduce Stress</label>
+      <label><input type="checkbox" data-goal value="mental_health"> Improve Mental Health</label>
+      <label><input type="checkbox" data-goal value="athletic_performance"> Improve Athletic Performance</label>
+      <label><input type="checkbox" data-goal value="run_faster"> Run Faster</label>
+      <label><input type="checkbox" data-goal value="walk_longer"> Walk Longer Distances</label>
+      <label><input type="checkbox" data-goal value="military_readiness"> Improve Military Readiness</label>
+      <label><input type="checkbox" data-goal value="work_capacity"> Improve Work Capacity</label>
+      <label><input type="checkbox" data-goal value="consistency"> Build Consistency</label>
+      <label><input type="checkbox" data-goal value="habits"> Create Healthy Habits</label>
+      <label><input type="checkbox" data-goal value="confidence"> Improve Confidence</label>
+      <label><input type="checkbox" data-goal value="longevity"> Age Better / Longevity</label>
+    </div>
+    <button data-rpg-prev>Back</button><button data-rpg-next>Next</button>
+  </div>
+
+  <div class="rpg-step" data-rpg-step="3">
+    <h2>Prioritize Your Top Goals</h2>
+    <div class="formGrid">
+      <label>Primary Goal <select id="primaryGoal"></select></label>
+      <label>Secondary Goal <select id="secondaryGoal"></select></label>
+      <label>Third Goal <select id="thirdGoal"></select></label>
+    </div>
+    <button data-rpg-prev>Back</button><button data-rpg-next>Next</button>
+  </div>
+
+  <div class="rpg-step" data-rpg-step="4">
+    <h2>Injuries or Limitations</h2>
+    <div class="checkboxGrid">
+      <label><input type="checkbox" data-injury value="shoulder"> Shoulder</label>
+      <label><input type="checkbox" data-injury value="knee"> Knee</label>
+      <label><input type="checkbox" data-injury value="back"> Back</label>
+      <label><input type="checkbox" data-injury value="hip"> Hip</label>
+      <label><input type="checkbox" data-injury value="ankle"> Ankle</label>
+      <label><input type="checkbox" data-injury value="other"> Other</label>
+    </div>
+    <button data-rpg-prev>Back</button><button data-rpg-next>Next</button>
+  </div>
+
+  <div class="rpg-step" data-rpg-step="5">
+    <h2>Quick Functional Assessment</h2>
+    <h3>Cardio Assessment</h3>
+    <div class="formGrid">
+      <label>Cardio Method <select id="rpgCardioMethod"><option>Outdoor Walk</option><option>Treadmill Walk</option><option>Indoor Track</option><option>Other</option></select></label>
+      <label>Walk distance in miles <input id="rpgWalkDistance" type="number" step="0.01" placeholder="0.50"></label>
+      <label>Walk RPE / effort 1–10 <input id="rpgEffort" type="number" min="1" max="10" placeholder="5"></label>
+      <label>Treadmill speed mph (optional) <input id="rpgTreadmillSpeed" type="number" step="0.1" placeholder="3.0"></label>
+      <label>Treadmill incline % (optional) <input id="rpgTreadmillIncline" type="number" step="0.5" placeholder="0"></label>
+    </div>
+    <p class="muted helpText">Distance examples: 0.10 = one tenth mile, 0.25 = quarter mile, 0.50 = half mile, 1.00 = one mile. Walk RPE applies only to the cardio test.</p>
+    <h3>Strength & Core</h3>
+    <div class="formGrid">
+      <label>Chair stands in 30 seconds <input id="rpgChair" type="number" placeholder="10"></label>
+      <label>Bodyweight squats <input id="rpgSquats" type="number" placeholder="10"></label>
+      <label>Push-ups <input id="rpgPushups" type="number" placeholder="5"></label>
+      <label>Plank seconds <input id="rpgPlank" type="number" placeholder="30"></label>
+    </div>
+    <p class="muted helpText">Chair stand: sit → stand fully upright → sit = 1 rep. Push-ups: use wall, incline, knee, or standard. Plank: stop when form breaks.</p>
+    <label><input id="rpgConcerningSymptoms" type="checkbox"> Dizziness, chest pressure, shortness of breath, numbness, or unusual symptoms</label>
+    <button data-rpg-prev>Back</button><button id="finishRpgWizard">Generate My Character</button>
+  </div>
+
+  <div class="rpg-step" data-rpg-step="6">
+    <h2>Your Character Is Ready</h2>
+    <div id="rpgResults"></div>
+    <button id="closeRpgWizard">View My Character</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const safeParse=(k,f)=>{try{return JSON.parse(localStorage.getItem(k)||"null")??f}catch(e){return f}};
+const safeSave=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const todayKey=(d=new Date())=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const escapeHtml=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+
+const workoutMap={0:"Sunday - Recovery / Rest Day",1:"Monday - Upper Body Strength",2:"Tuesday - Lower Body Strength",3:"Wednesday - Conditioning + Core",4:"Thursday - Upper Body Muscle Building",5:"Friday - Lower Body + Conditioning",6:"Saturday - Recovery / Rest Day"};
+
+const archetypes={
+ explorer:{emoji:"⛰️",name:"Explorer",role:"Foundation and habit building.",focus:"Consistency, confidence, movement quality.",voice:"Start steady. Every step counts."},
+ guardian:{emoji:"🛡️",name:"Guardian",role:"Strength and resilience.",focus:"Muscle, strength, discipline.",voice:"Strength is earned one rep at a time."},
+ ranger:{emoji:"⚡",name:"Ranger",role:"Performance and endurance.",focus:"Conditioning, work capacity, speed.",voice:"Move with purpose. Finish strong."},
+ phoenix:{emoji:"🔥",name:"Phoenix",role:"Transformation and fat loss.",focus:"Body composition, weight loss, lifestyle change.",voice:"Transformation is built one day at a time."},
+ sage:{emoji:"🧠",name:"Sage",role:"Recovery, longevity, and mobility.",focus:"Pain reduction, mobility, sustainable progress.",voice:"Train for the decades ahead."}
+};
+const specs={
+ berserker:{emoji:"💪",name:"Berserker",focus:"Muscle and strength."},
+ shapeshifter:{emoji:"⚖️",name:"Shapeshifter",focus:"Body recomposition."},
+ windrunner:{emoji:"🏃",name:"Windrunner",focus:"Endurance and distance."},
+ lifebinder:{emoji:"❤️",name:"Lifebinder",focus:"Heart health and energy."},
+ stonewarden:{emoji:"🦴",name:"Stonewarden",focus:"Joint health and stability."},
+ wayfarer:{emoji:"🤸",name:"Wayfarer",focus:"Mobility, flexibility, and balance."},
+ sentinel:{emoji:"🎖️",name:"Sentinel",focus:"Tactical fitness and work capacity."},
+ immortal:{emoji:"👑",name:"Immortal",focus:"Longevity and healthy aging."},
+ dreamwalker:{emoji:"🌙",name:"Dreamwalker",focus:"Sleep, stress, and recovery."},
+ dragonSlayer:{emoji:"🔥",name:"Dragon Slayer",focus:"Aggressive fat loss and goal weight."},
+ champion:{emoji:"🏆",name:"Champion",focus:"Sports performance and competition."}
+};
+const traits={
+ alchemist:{emoji:"🥗",name:"Alchemist",focus:"Nutrition-focused coaching."},
+ restkeeper:{emoji:"🛌",name:"Restkeeper",focus:"Recovery-focused coaching."},
+ ironWill:{emoji:"📈",name:"Iron Will",focus:"Fast progress and measurable improvement."},
+ survivor:{emoji:"🛡️",name:"Survivor",focus:"Injury prevention and safe progression."},
+ balanced:{emoji:"⚖️",name:"Balanced",focus:"Sustainable progress."},
+ relentless:{emoji:"🔥",name:"Relentless",focus:"High-intensity effort when recovery allows."}
+};
+const goalLabels={
+ lose_weight:"Lose Weight",burn_fat:"Burn Fat",build_muscle:"Build Muscle",tone_define:"Tone/Define Muscles",body_recomp:"Improve Body Composition",reach_goal_weight:"Reach Goal Weight",look_better_naked:"Look Better Naked",
+ get_stronger:"Get Stronger",upper_strength:"Upper Body Strength",lower_strength:"Lower Body Strength",grip_strength:"Grip Strength",cardio:"Cardio Fitness",endurance:"Endurance",stamina:"Stamina",energy:"Daily Energy",
+ flexibility:"Flexibility",mobility:"Mobility",joint_pain:"Reduce Joint Pain",injury_recovery:"Recover From Injury",balance:"Balance",blood_pressure:"Lower Blood Pressure",heart_health:"Heart Health",sleep:"Improve Sleep",
+ stress:"Reduce Stress",mental_health:"Mental Health",athletic_performance:"Athletic Performance",run_faster:"Run Faster",walk_longer:"Walk Longer",military_readiness:"Military Readiness",work_capacity:"Work Capacity",
+ consistency:"Build Consistency",habits:"Healthy Habits",confidence:"Confidence",longevity:"Longevity"
+};
+
+let wizard={step:0,data:{}};
+
+function profile(){return safeParse("userProfile",null)}
+function character(){return safeParse("characterProfile",null)}
+function num(id){const n=Number($(id)?.value||0); return Number.isFinite(n)?n:0}
+function selectedGoals(){return [...document.querySelectorAll("[data-goal]:checked")].map(x=>x.value)}
+function selectedInjuries(){return [...document.querySelectorAll("[data-injury]:checked")].map(x=>x.value)}
+
+function initTabs(){
+ document.querySelectorAll("[data-tab]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+   document.querySelectorAll("[data-tab]").forEach(b=>b.classList.remove("active"));
+   btn.classList.add("active");
+   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+   $(btn.dataset.tab)?.classList.add("active");
+   renderAll();
+  });
+ });
+}
+function showStep(n){
+ const steps=[...document.querySelectorAll(".rpg-step")], max=Math.max(0,steps.length-1);
+ wizard.step=Math.max(0,Math.min(max,n));
+ steps.forEach(s=>s.classList.toggle("active",Number(s.dataset.rpgStep)===wizard.step));
+ if($("rpgProgressBar")) $("rpgProgressBar").style.width=max?`${Math.round((wizard.step/max)*100)}%`:"0%";
+ if(wizard.step===3) populatePriorityGoals();
+}
+function openWizard(){$("rpgWizard")?.classList.remove("hidden");showStep(0)}
+function closeWizard(){$("rpgWizard")?.classList.add("hidden")}
+
+function collectBasics(){
+ wizard.data.name=$("rpgName")?.value.trim()||wizard.data.name||"User";
+ wizard.data.age=num("rpgAge")||wizard.data.age||"";
+ wizard.data.feet=num("rpgFeet")||wizard.data.feet||"";
+ wizard.data.inches=num("rpgInches")||wizard.data.inches||"";
+ wizard.data.weight=num("rpgWeight")||wizard.data.weight||"";
+ wizard.data.goalWeight=num("rpgGoalWeight")||wizard.data.goalWeight||195;
+ wizard.data.activity=$("rpgActivity")?.value||"sedentary";
+}
+function populatePriorityGoals(){
+ const goals=selectedGoals();
+ const opts=['<option value="">None selected</option>'].concat(goals.map(g=>`<option value="${g}">${goalLabels[g]||g}</option>`)).join("");
+ ["primaryGoal","secondaryGoal","thirdGoal"].forEach(id=>{if($(id)) $(id).innerHTML=opts});
+}
+function scoreFunctional(){
+ const walk=Math.min(40,(num("rpgWalkDistance")/0.5)*40);
+ const chair=Math.min(22,(num("rpgChair")/20)*22);
+ const squat=Math.min(18,(num("rpgSquats")/20)*18);
+ const push=Math.min(20,(num("rpgPushups")/20)*20);
+ const plank=Math.min(20,(num("rpgPlank")/90)*20);
+ const effortPenalty=Math.max(0,(num("rpgEffort")-7)*5);
+ const strength=Math.round(chair+squat+push+plank);
+ const conditioning=Math.max(0,Math.round(walk-effortPenalty));
+ let mobility=100;
+ const injuries=selectedInjuries();
+ if(injuries.includes("shoulder")) mobility-=15;
+ if(injuries.includes("knee")) mobility-=20;
+ if(injuries.includes("back")) mobility-=25;
+ if(injuries.includes("hip")) mobility-=20;
+ mobility=Math.max(0,mobility);
+ const overall=Math.round(strength*.4+conditioning*.35+mobility*.25);
+ let fitnessClass="Beginner"; if(overall>=70&&mobility>=70) fitnessClass="Intermediate"; else if(overall>=45) fitnessClass="Novice";
+ const recoveryRisk=$("rpgConcerningSymptoms")?.checked||mobility<55?"Elevated":mobility<75?"Moderate":"Low";
+ return {strength,conditioning,mobility,overall,fitnessClass,recoveryRisk};
+}
+function addScores(scores, keys, amount){keys.forEach(k=>scores[k]=(scores[k]||0)+amount)}
+function generateCharacter(input){
+ const goals=input.goals||[], priorities=[input.primaryGoal,input.secondaryGoal,input.thirdGoal].filter(Boolean), injuries=input.injuries||[], assessment=input.assessment;
+ const a={explorer:0,guardian:0,ranger:0,phoenix:0,sage:0};
+ const s={berserker:0,shapeshifter:0,windrunner:0,lifebinder:0,stonewarden:0,wayfarer:0,sentinel:0,immortal:0,dreamwalker:0,dragonSlayer:0,champion:0};
+ const t={alchemist:0,restkeeper:0,ironWill:0,survivor:0,balanced:10,relentless:0};
+ const weightLoss=["lose_weight","burn_fat","reach_goal_weight","look_better_naked"];
+ const muscle=["build_muscle","get_stronger","upper_strength","lower_strength","grip_strength"];
+ const endurance=["cardio","endurance","stamina","run_faster","walk_longer"];
+ const recovery=["mobility","joint_pain","injury_recovery","balance","flexibility"];
+ const health=["blood_pressure","heart_health","energy","longevity"];
+ const sleepStress=["sleep","stress","mental_health"];
+ const performance=["athletic_performance","military_readiness","work_capacity"];
+ goals.forEach(g=>{
+  if(weightLoss.includes(g)){a.phoenix+=18;s.dragonSlayer+=12;t.alchemist+=6}
+  if(["body_recomp","tone_define","look_better_naked"].includes(g)){a.phoenix+=12;s.shapeshifter+=18;t.alchemist+=5}
+  if(muscle.includes(g)){a.guardian+=16;s.berserker+=16;t.ironWill+=8}
+  if(endurance.includes(g)){a.ranger+=16;s.windrunner+=16;t.relentless+=4}
+  if(recovery.includes(g)){a.sage+=18;s.stonewarden+=12;s.wayfarer+=10;t.survivor+=12;t.restkeeper+=6}
+  if(health.includes(g)){a.sage+=10;s.lifebinder+=14;s.immortal+=10;t.balanced+=6}
+  if(sleepStress.includes(g)){a.sage+=12;s.dreamwalker+=18;t.restkeeper+=14}
+  if(performance.includes(g)){a.ranger+=18;s.sentinel+=14;s.champion+=12;t.relentless+=8}
+  if(["consistency","habits","confidence"].includes(g)){a.explorer+=16;t.balanced+=8}
+ });
+ priorities.forEach((g,i)=>{const bonus=[18,12,8][i]||0; if(weightLoss.includes(g)){a.phoenix+=bonus;s.dragonSlayer+=bonus} if(muscle.includes(g)){a.guardian+=bonus;s.berserker+=bonus} if(endurance.includes(g)){a.ranger+=bonus;s.windrunner+=bonus} if(recovery.includes(g)){a.sage+=bonus;s.stonewarden+=bonus;t.survivor+=bonus} if(g==="body_recomp"||g==="look_better_naked"){s.shapeshifter+=bonus;t.alchemist+=bonus}});
+ if(assessment.fitnessClass==="Beginner"){a.explorer+=22;t.balanced+=8}
+ if(assessment.fitnessClass==="Intermediate"){a.guardian+=8;a.ranger+=8;t.ironWill+=6}
+ if(assessment.recoveryRisk==="Elevated"||injuries.length){a.sage+=25;s.stonewarden+=16;t.survivor+=20;t.restkeeper+=8}
+ if(input.activity==="high"){a.ranger+=10;t.relentless+=6}
+ if(input.activity==="sedentary"){a.explorer+=10;t.balanced+=8}
+ const pick=obj=>Object.entries(obj).sort((x,y)=>y[1]-x[1])[0][0];
+ const archetype=pick(a), specialization=pick(s), trait=pick(t);
+ const totalScore=(a[archetype]||0)+(s[specialization]||0)+(t[trait]||0);
+ const maxPossible=160;
+ const confidence=Math.max(55,Math.min(98,Math.round((totalScore/maxPossible)*100)));
+ const explanation=[];
+ if(goals.some(g=>weightLoss.includes(g))) explanation.push("body composition and fat-loss goals");
+ if(goals.some(g=>muscle.includes(g))) explanation.push("strength and muscle goals");
+ if(goals.some(g=>endurance.includes(g))) explanation.push("conditioning goals");
+ if(goals.some(g=>recovery.includes(g))||injuries.length) explanation.push("mobility, pain, or injury considerations");
+ if(assessment.fitnessClass==="Beginner") explanation.push("beginner assessment profile");
+ return {archetype,specialization,trait,confidence,level:calculateLevel(),powerScore:calculatePowerScore(),explanation,generatedAt:new Date().toISOString(),scores:{archetype:a,specialization:s,trait:t}};
+}
+function calculatePowerScore(){
+ const workouts=safeParse("workoutLogs",[]).length*10;
+ const supplements=safeParse("supplementLogs",[]).length*2;
+ const pain=safeParse("painLogs",[]).length*2;
+ const assessments=safeParse("functionalFitnessAssessments",[]).length*25;
+ const p=profile(); let milestone=0;
+ if(p?.weight&&p?.goalWeight){const diff=Math.abs(Number(p.weight)-Number(p.goalWeight)); if(diff<=2) milestone+=100}
+ return workouts+supplements+pain+assessments+milestone;
+}
+function calculateLevel(){return Math.max(1,Math.floor(calculatePowerScore()/100)+1)}
+function achievements(){
+ const power=calculatePowerScore(), workouts=safeParse("workoutLogs",[]).length, supp=safeParse("supplementLogs",[]).length, assessments=safeParse("functionalFitnessAssessments",[]).length, pain=safeParse("painLogs",[]).length;
+ return [
+  {id:"first_steps",name:"First Steps",desc:"Complete first workout.",unlocked:workouts>=1},
+  {id:"awakening",name:"Character Awakening",desc:"Complete character setup.",unlocked:!!character()},
+  {id:"scholar",name:"The Assessment",desc:"Complete a functional assessment.",unlocked:assessments>=1},
+  {id:"alchemist",name:"Alchemist's Habit",desc:"Log supplements 7 times.",unlocked:supp>=7},
+  {id:"guardian",name:"Consistency Spark",desc:"Complete 5 workouts.",unlocked:workouts>=5},
+  {id:"sage_wisdom",name:"Sage's Wisdom",desc:"Use pain tracking when something feels unusual.",unlocked:pain>=1},
+  {id:"power_500",name:"Power Rising",desc:"Reach 500 Power Score.",unlocked:power>=500},
+  {id:"phoenix_rising",name:"Phoenix Rising",desc:"Reach goal weight range.",unlocked:(()=>{const p=profile();return p?.weight&&p?.goalWeight&&Math.abs(Number(p.weight)-Number(p.goalWeight))<=2})()}
+ ];
+}
+function evolutionSuggestions(ch){
+ if(!ch)return [];
+ const p=calculatePowerScore();
+ const suggestions=[];
+ if(ch.archetype==="explorer"&&p>=300)suggestions.push("Explorer → Guardian: build strength after foundation habits are established.");
+ if(ch.archetype==="phoenix"&&p>=500)suggestions.push("Phoenix → Guardian: shift from transformation to strength after major weight progress.");
+ if(ch.archetype==="sage"&&p>=400)suggestions.push("Sage → Immortal path: emphasize longevity and sustainable capacity.");
+ if(ch.archetype==="guardian"&&p>=600)suggestions.push("Guardian → Ranger path: add performance and conditioning focus.");
+ return suggestions.length?suggestions:["Keep building Power Score. Evolution options unlock as consistency, assessments, and goals improve."];
+}
+function renderCharacterHTML(ch,compact=false){
+ if(!ch)return `<p class="muted">Complete Initial Assessment to generate your RPG fitness character.</p><button onclick="document.querySelector('[data-tab=assessment]').click()">Start Assessment</button>`;
+ const A=archetypes[ch.archetype], S=specs[ch.specialization], T=traits[ch.trait];
+ return `<div class="character-title">${A.emoji} ${A.name}</div>
+ <div class="character-subtitle">${S.emoji} ${S.name} • ${T.emoji} ${T.name}</div>
+ <div class="powerbar"><div style="width:${Math.min(100,(ch.powerScore%100))}%"></div></div>
+ <p><strong>Level ${ch.level}</strong> • Power Score: ${ch.powerScore} • Confidence: ${ch.confidence}%</p>
+ ${compact?"":`<div class="character-grid">
+  <div class="stat-card"><strong>Archetype</strong><br>${A.role}<br><span class="muted">${A.focus}</span></div>
+  <div class="stat-card"><strong>Specialization</strong><br>${S.focus}</div>
+  <div class="stat-card"><strong>Trait</strong><br>${T.focus}</div>
+  <div class="stat-card"><strong>Why</strong><br>${(ch.explanation||[]).map(x=>`<span class="badge">${escapeHtml(x)}</span>`).join(" ")||"Based on your profile."}</div>
+ </div>`}`;
+}
+function renderCodex(){
+ const box=$("codexContent"); if(!box)return;
+ const ch=character();
+ const current=ch?renderCharacterHTML(ch):"<p>Complete setup to unlock your personal codex.</p>";
+ box.innerHTML=`<div class="codex-card"><h3>Your Character</h3>${current}</div>
+ <h3>Primary Archetypes</h3><div class="character-grid">${Object.values(archetypes).map(x=>`<div class="codex-card"><strong>${x.emoji} ${x.name}</strong><p>${x.role}</p><p class="muted">${x.focus}</p></div>`).join("")}</div>
+ <h3>Specializations</h3><div class="character-grid">${Object.values(specs).map(x=>`<div class="codex-card"><strong>${x.emoji} ${x.name}</strong><p>${x.focus}</p></div>`).join("")}</div>
+ <h3>Traits</h3><div class="character-grid">${Object.values(traits).map(x=>`<div class="codex-card"><strong>${x.emoji} ${x.name}</strong><p>${x.focus}</p></div>`).join("")}</div>
+ <h3>Evolution Paths</h3><div class="codex-card">${evolutionSuggestions(ch).map(x=>`<p>${escapeHtml(x)}</p>`).join("")}</div>`;
+}
+function renderAchievements(){
+ const box=$("achievementList"); if(!box)return;
+ box.innerHTML=achievements().map(a=>`<div class="achievement-card ${a.unlocked?"unlocked":"locked"}"><strong>${a.unlocked?"✅":"🔒"} ${a.name}</strong><br><span class="muted">${a.desc}</span></div>`).join("");
+ const panel=$("powerScorePanel"); if(panel){const power=calculatePowerScore();panel.innerHTML=`<div class="stat-card"><strong>Power Score</strong><br>${power}<br><span class="muted">Level ${calculateLevel()}</span></div>`}
+}
+function renderToday(){
+ const now=new Date(), p=profile(), ch=character();
+ document.title=`Fitness Coach - ${ch?archetypes[ch.archetype].name:"Beta"}`;
+ $("dashboardCharacter").innerHTML=renderCharacterHTML(ch,true);
+ $("characterDetail").innerHTML=renderCharacterHTML(ch,false);
+ const goal=Number(p?.goalWeight)||195, current=Number(p?.weight)||null;
+ $("goalWeightHeader").textContent=`Goal Weight: ${goal} lbs`;
+ $("goalProgressHeader").textContent=current?`Current: ${current} lbs • ${Math.round((current-goal)*10)/10} lbs to goal`:"Complete the Initial Assessment to personalize your goal.";
+ $("todayDayName").textContent=now.toLocaleDateString(undefined,{weekday:"long"});
+ $("todayDateText").textContent=now.toLocaleDateString(undefined,{month:"long",day:"numeric",year:"numeric"});
+ $("todayTimeText").textContent=now.toLocaleTimeString(undefined,{hour:"numeric",minute:"2-digit"});
+ $("todayWorkoutText").textContent=workoutMap[now.getDay()];
+ $("todayWorkoutStatus").textContent=ch?`${archetypes[ch.archetype].name} guidance active`:"Assessment needed";
+ $("todayNextAction").textContent=ch?archetypes[ch.archetype].voice:"Complete Initial Assessment to generate your character.";
+ $("characterWorkoutGuidance").textContent=ch?`${archetypes[ch.archetype].name} style: ${archetypes[ch.archetype].focus} ${specs[ch.specialization].focus}`:"Complete setup to receive character-based workout guidance.";
+}
+function renderProfilePreview(){
+ const p=profile(), ch=character(), box=$("currentProfilePreview"); if(!box)return;
+ box.innerHTML=p?`<strong>${escapeHtml(p.name)}</strong><br>Goal: ${p.goalWeight} lbs<br>${ch?`${archetypes[ch.archetype].emoji} ${archetypes[ch.archetype].name} • ${specs[ch.specialization].emoji} ${specs[ch.specialization].name} • ${traits[ch.trait].emoji} ${traits[ch.trait].name}`:"Character not generated yet."}`:"No profile created yet.";
+}
+function renderAll(){renderToday();renderProfilePreview();renderCodex();renderAchievements()}
+window.renderAll=renderAll;
+
+function finishWizard(){
+ collectBasics();
+ const goals=selectedGoals(), injuries=selectedInjuries(), assessment=scoreFunctional();
+ const input={...wizard.data,goals,primaryGoal:$("primaryGoal").value,secondaryGoal:$("secondaryGoal").value,thirdGoal:$("thirdGoal").value,injuries,assessment};
+ const ch=generateCharacter(input);
+ const profileData={name:wizard.data.name,age:wizard.data.age,feet:wizard.data.feet,inches:wizard.data.inches,weight:wizard.data.weight,goalWeight:wizard.data.goalWeight,activity:wizard.data.activity,goals,primaryGoal:input.primaryGoal,secondaryGoal:input.secondaryGoal,thirdGoal:input.thirdGoal,injuries,fitnessClassification:assessment.fitnessClass,recoveryRisk:assessment.recoveryRisk,onboardingComplete:true,updatedAt:new Date().toISOString()};
+ safeSave("userProfile",profileData);
+ safeSave("characterProfile",ch);
+ const rows=safeParse("functionalFitnessAssessments",[]); rows.push({date:todayKey(),assessment,input}); safeSave("functionalFitnessAssessments",rows);
+ $("rpgResults").innerHTML=renderCharacterHTML(ch,false)+`<button onclick="document.querySelector('[data-tab=character]').click();document.getElementById('rpgWizard').classList.add('hidden')">Open Character Page</button>`;
+ showStep(6); renderAll();
+}
+function initWizard(){
+ $("openVisibleRpgSetup")?.addEventListener("click",openWizard);
+ $("openCharacterSetup")?.addEventListener("click",openWizard);
+ $("showCurrentProfile")?.addEventListener("click",renderProfilePreview);
+ $("closeRpgWizard")?.addEventListener("click",closeWizard);
+ document.querySelectorAll("[data-rpg-next]").forEach(b=>b.addEventListener("click",()=>{collectBasics();showStep(wizard.step+1)}));
+ document.querySelectorAll("[data-rpg-prev]").forEach(b=>b.addEventListener("click",()=>showStep(wizard.step-1)));
+ $("finishRpgWizard")?.addEventListener("click",finishWizard);
+ document.querySelectorAll("[data-goal]").forEach(x=>x.addEventListener("change",populatePriorityGoals));
+}
+function initPain(){
+ $("savePainLog")?.addEventListener("click",()=>{
+  const severity=num("painSeverity"), highRisk=$("painLocation").value==="Chest"||$("painDizzy").checked||$("painBreath").checked||$("painRadiating").checked||severity>=8;
+  const rec=highRisk?"Stop the workout. Do not train through this. Consider medical evaluation if symptoms are current, severe, chest-related, or include dizziness, breathing trouble, numbness, or weakness.":severity>=4?"Stop or modify this exercise. Reduce weight 10–20%, substitute the movement, and do not increase weight next session.":"Monitor symptoms. Continue only if pain is mild and does not change your form.";
+  const logs=safeParse("painLogs",[]); logs.push({date:todayKey(),severity,location:$("painLocation").value,type:$("painType").value,exercise:$("painExercise").value,recommendation:rec}); safeSave("painLogs",logs); $("painRecommendation").textContent=rec; renderAll();
+ });
+}
+function initActions(){
+ $("markWorkoutComplete")?.addEventListener("click",()=>{const logs=safeParse("workoutLogs",[]);logs.push({date:todayKey(),workout:workoutMap[new Date().getDay()],completed:true,completedAt:new Date().toISOString()});safeSave("workoutLogs",logs);$("coachStatus").textContent="Today's workout marked complete. +10 Power Score.";const ch=character(); if(ch){ch.powerScore=calculatePowerScore();ch.level=calculateLevel();safeSave("characterProfile",ch)} renderAll();});
+ $("logSupplementsToday")?.addEventListener("click",()=>{const logs=safeParse("supplementLogs",[]);logs.push({date:todayKey(),creatine:"5g",loggedAt:new Date().toISOString()});safeSave("supplementLogs",logs);$("supplementStatus").textContent="Supplements logged for today. +2 Power Score.";const ch=character(); if(ch){ch.powerScore=calculatePowerScore();ch.level=calculateLevel();safeSave("characterProfile",ch)} renderAll();});
+ $("recalculateCharacter")?.addEventListener("click",()=>{const p=profile(); if(!p){alert("Complete setup first.");return} const assessment=safeParse("functionalFitnessAssessments",[]).slice(-1)[0]?.assessment||{fitnessClass:p.fitnessClassification||"Beginner",recoveryRisk:p.recoveryRisk||"Low",strength:0,conditioning:0,mobility:100,overall:0}; const ch=generateCharacter({...p,assessment}); safeSave("characterProfile",ch); renderAll();});
+ $("exportJson")?.addEventListener("click",()=>{const keys=["userProfile","characterProfile","workoutLogs","supplementLogs","painLogs","functionalFitnessAssessments"];const data={app:"Fitness Coach",version:"v45",exportedAt:new Date().toISOString(),data:{}};keys.forEach(k=>data.data[k]=safeParse(k,null));const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`fitness-coach-backup-${todayKey()}.json`;a.click();URL.revokeObjectURL(url);});
+ $("resetData")?.addEventListener("click",()=>{if(!confirm("Export backup first. Continue reset?"))return;["userProfile","characterProfile","workoutLogs","supplementLogs","painLogs","functionalFitnessAssessments"].forEach(k=>localStorage.removeItem(k));location.reload();});
+}
+function initTabs(){document.querySelectorAll("[data-tab]").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("[data-tab]").forEach(b=>b.classList.remove("active"));btn.classList.add("active");document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));$(btn.dataset.tab)?.classList.add("active");renderAll();}))}
+document.addEventListener("DOMContentLoaded",()=>{initTabs();initWizard();initPain();initActions();renderAll();setInterval(renderToday,30000)});
+})();
+</script>
+</body>
+</html>

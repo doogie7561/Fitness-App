@@ -1,0 +1,44 @@
+# Fitness Coach Project History
+
+## Version 45 — RPG Character System
+- Built real Character Generation Engine
+- Removed manual class selection as the primary decision-maker
+- Added goal checkboxes that influence character assignment
+- Added Primary, Secondary, and Third goal priority
+- Added Primary Archetypes:
+  - Explorer
+  - Guardian
+  - Ranger
+  - Phoenix
+  - Sage
+- Added Specializations:
+  - Berserker
+  - Shapeshifter
+  - Windrunner
+  - Lifebinder
+  - Stonewarden
+  - Wayfarer
+  - Sentinel
+  - Immortal
+  - Dreamwalker
+  - Dragon Slayer
+  - Champion
+- Added Traits:
+  - Alchemist
+  - Restkeeper
+  - Iron Will
+  - Survivor
+  - Balanced
+  - Relentless
+- Added Character Codex
+- Added Power Score and Level
+- Added Achievements
+- Added Evolution Suggestions
+- Added character dashboard and character-based workout guidance
+
+## Current Status
+Status: Beta
+Architecture: Minimal GitHub Pages deployment
+Required files: index.html, manifest.json, icon.png
+Storage: local browser storage
+Security: no API keys, no embedded secrets, no external scripts
