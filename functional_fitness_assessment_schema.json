@@ -1,0 +1,49 @@
+{
+  "functionalAssessment": {
+    "date": "YYYY-MM-DD",
+    "restingMeasurements": {
+      "age": "number",
+      "heightInches": "number",
+      "weightLb": "number",
+      "restingHeartRate": "number"
+    },
+    "walkingTest": {
+      "type": "6-minute walk|10-minute treadmill walk",
+      "distance": "number",
+      "distanceUnit": "miles|meters",
+      "averageHeartRate": "number",
+      "perceivedEffort": "1-10"
+    },
+    "chairStandTest": {
+      "reps30Seconds": "number"
+    },
+    "bodyweightSquat": {
+      "comfortableReps": "number",
+      "pain": "boolean",
+      "formNotes": "string"
+    },
+    "pushUpAssessment": {
+      "variation": "wall|incline|standard",
+      "qualityReps": "number"
+    },
+    "plankAssessment": {
+      "holdSeconds": "number"
+    },
+    "mobilityScreen": {
+      "overheadReach": "pass|limited|pain",
+      "toeTouch": "pass|limited|pain",
+      "deepSquat": "pass|limited|pain",
+      "shoulderDiscomfort": "boolean",
+      "kneeDiscomfort": "boolean",
+      "backDiscomfort": "boolean"
+    },
+    "scores": {
+      "strengthScore": "0-100",
+      "conditioningScore": "0-100",
+      "mobilityScore": "0-100",
+      "recoveryRisk": "low|moderate|elevated",
+      "overallFitnessScore": "0-100",
+      "classification": "beginner|novice|intermediate"
+    }
+  }
+}

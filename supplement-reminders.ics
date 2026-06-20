@@ -1,0 +1,28 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//195 Goal Fitness//Supplement Reminders//EN
+BEGIN:VEVENT
+UID:creatine-morning@195fitness
+DTSTART:20260621T080000
+RRULE:FREQ=DAILY
+SUMMARY:Supplements: creatine, vitamin D, fish oil
+DESCRIPTION:Take creatine 5g, vitamin D if using, and fish oil.
+BEGIN:VALARM
+TRIGGER:-PT0M
+ACTION:DISPLAY
+DESCRIPTION:Take morning supplements.
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:protein-evening@195fitness
+DTSTART:20260621T200000
+RRULE:FREQ=DAILY
+SUMMARY:Protein check-in
+DESCRIPTION:Check protein intake and close the gap toward your daily target.
+BEGIN:VALARM
+TRIGGER:-PT0M
+ACTION:DISPLAY
+DESCRIPTION:Check protein intake.
+END:VALARM
+END:VEVENT
+END:VCALENDAR

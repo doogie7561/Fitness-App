@@ -1,0 +1,29 @@
+body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b1020;color:#f8fafc}
+.app-header{padding:1rem 1rem .5rem}
+.app-header h1{margin:.25rem 0;font-size:2rem}
+#headerSubtext{margin:0;color:#cbd5e1}
+.app-nav{display:flex;gap:.4rem;flex-wrap:wrap;padding:.75rem;position:sticky;top:0;z-index:10;background:#0b1020;border-bottom:1px solid rgba(255,255,255,.1)}
+button,.fileLabel{border:1px solid rgba(255,255,255,.14);background:#2563eb;color:white;border-radius:.7rem;padding:.7rem .9rem;font:inherit}
+button.ghost{background:rgba(255,255,255,.08)}
+button.active{outline:2px solid #38bdf8}
+.tab{display:none}
+.tab.active{display:block}
+.panel{padding:1rem;margin:1rem;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.05)}
+.muted{color:#cbd5e1}
+.formGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem}
+input,select{width:100%;box-sizing:border-box;border-radius:.55rem;border:1px solid rgba(255,255,255,.18);padding:.65rem;background:#111827;color:#fff}
+.today-grid,.supplement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem}
+.today-grid>div,.supplement-grid>div,.goal-summary,.resultBox{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:.85rem;background:rgba(255,255,255,.04);margin:.5rem 0}
+.setup-callout{border:2px solid rgba(56,189,248,.6);background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(255,255,255,.05))}
+.rpg-wizard{position:fixed;inset:0;z-index:9999;overflow:auto;background:#080d19;color:white;padding:1rem}
+.rpg-wizard.hidden{display:none}
+.rpg-step{display:none;max-width:760px;margin:1rem auto;padding:1rem;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.06)}
+.rpg-step.active{display:block}
+.rpg-progress{max-width:760px;height:10px;margin:1rem auto;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}
+.rpg-progress div{height:100%;width:0;background:linear-gradient(90deg,#2563eb,#38bdf8)}
+.choiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin:1rem 0}
+.choiceList{display:grid;gap:.75rem;margin:1rem 0}
+.choiceGrid button,.choiceList button{min-height:64px;text-align:left;background:rgba(255,255,255,.08)}
+.choiceGrid button.selected,.choiceList button.selected{border-color:#38bdf8;background:rgba(37,99,235,.35)}
+.fileLabel input{display:none}
+.dangerButton{background:#991b1b}
