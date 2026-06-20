@@ -1,0 +1,71 @@
+
+:root{--bg:#0b1020;--panel:#111827;--muted:#9ca3af;--line:rgba(255,255,255,.12);--good:#22c55e;--warn:#f59e0b;--bad:#ef4444}*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:#f9fafb}header,main{max-width:1100px;margin:auto;padding:1rem}header{position:sticky;top:0;background:rgba(11,16,32,.94);backdrop-filter:blur(10px);z-index:10}h1{margin:.2rem 0}.muted,.hint{color:var(--muted)}nav{display:flex;gap:.45rem;overflow-x:auto;padding:.5rem 0}button,select,input,textarea{font:inherit}button{border:0;border-radius:10px;padding:.65rem .85rem;background:#2563eb;color:white;font-weight:700}button.ghost{background:rgba(255,255,255,.1)}button.danger{background:var(--bad)}nav button{white-space:nowrap;background:rgba(255,255,255,.08)}nav button.active{background:#2563eb}.tab{display:none}.tab.active{display:block}.panel,.card{background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:16px;padding:1rem;margin:1rem 0}.grid,.formGrid,.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.75rem}.metric{padding:.8rem;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid var(--line)}.metric strong{display:block;font-size:1.35rem}.metric.good{border-color:rgba(34,197,94,.55)}.metric.warn{border-color:rgba(245,158,11,.55)}.metric.bad{border-color:rgba(239,68,68,.55)}label{display:block}input,select,textarea{width:100%;padding:.55rem;border-radius:10px;border:1px solid var(--line);background:#0f172a;color:#fff;margin-top:.25rem}textarea{min-height:70px}.setRow{display:grid;grid-template-columns:70px 1fr 1fr auto;gap:.5rem;align-items:center;padding:.55rem;border-radius:12px;background:rgba(255,255,255,.045);margin:.4rem 0}.setRow.completed{border:1px solid var(--good)}.progress{height:14px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}.progress div{height:100%;background:var(--good);width:0}.timer{text-align:center;font-size:2.4rem;font-weight:900;padding:1rem;border-radius:16px;background:rgba(245,158,11,.13);border:1px solid rgba(245,158,11,.4)}.hidden{display:none!important}.warning{border-color:rgba(239,68,68,.55);background:rgba(239,68,68,.08)}table{width:100%;border-collapse:collapse}td,th{border-bottom:1px solid var(--line);padding:.45rem;text-align:left}.lock{position:fixed;inset:0;background:rgba(5,8,18,.95);display:flex;align-items:center;justify-content:center;z-index:50}.lockbox{width:min(92vw,380px);background:#111827;border:1px solid var(--line);border-radius:18px;padding:1rem}body.hideSensitive [data-sensitive]{filter:blur(7px);user-select:none}canvas{max-width:100%;background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:12px}.small{font-size:.9rem}.pill{display:inline-block;border-radius:999px;padding:.2rem .5rem;background:rgba(255,255,255,.1);margin:.15rem}.dangerText{color:#fca5a5;font-weight:700}@media(max-width:650px){.setRow{grid-template-columns:1fr}.coachBtns{display:grid;gap:.5rem}}
+
+
+.today-dashboard{ margin:1rem 0; }
+.today-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:.75rem; }
+.today-grid > div{ border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:.85rem; background:rgba(255,255,255,.04); }
+
+
+.goal-summary{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  padding:.85rem;
+  background:rgba(255,255,255,.05);
+  margin:.75rem 0;
+}
+.goal-summary strong{
+  display:block;
+  font-size:1.15rem;
+}
+
+
+/* v34 audited release */
+.app-nav{display:flex;gap:.4rem;flex-wrap:wrap;padding:.75rem;position:sticky;top:0;z-index:10;background:#0b1020;border-bottom:1px solid rgba(255,255,255,.1)}
+.app-nav button{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);color:inherit}
+.tab{display:none}
+.tab.active{display:block}
+.panel{padding:1rem;margin:1rem;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.05)}
+.muted{opacity:.75}
+.formGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem}
+.formGrid input,.formGrid select,.formGrid textarea{width:100%;box-sizing:border-box}
+.today-grid,.supplement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem}
+.today-grid>div,.supplement-grid>div,.goal-summary,.resultBox{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:.85rem;background:rgba(255,255,255,.04);margin:.5rem 0}
+.fileLabel{display:inline-block;border:1px solid rgba(255,255,255,.14);border-radius:.5rem;padding:.5rem;margin:.25rem;cursor:pointer}
+.fileLabel input{display:none}
+.dangerButton{border-color:rgba(239,68,68,.6)}
+
+
+/* v35 RPG Avatar Onboarding */
+.rpg-hero{background:linear-gradient(135deg,rgba(37,99,235,.18),rgba(255,255,255,.05))}
+.rpg-wizard{position:fixed;inset:0;z-index:9999;overflow:auto;background:#080d19;color:white;padding:1rem}
+.rpg-wizard.hidden{display:none}
+.rpg-step{display:none;max-width:760px;margin:1rem auto;padding:1rem;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.06)}
+.rpg-step.active{display:block}
+.rpg-progress{max-width:760px;height:10px;margin:1rem auto;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}
+.rpg-progress div{height:100%;width:0;background:linear-gradient(90deg,#2563eb,#38bdf8)}
+.choiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin:1rem 0}
+.choiceList{display:grid;gap:.75rem;margin:1rem 0}
+.choiceGrid button,.choiceList button{min-height:64px;text-align:left;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);color:white}
+.choiceGrid button.selected,.choiceList button.selected{border-color:#38bdf8;background:rgba(37,99,235,.35)}
+.checkGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.5rem;margin:1rem 0}
+.checkGrid label{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:.65rem;background:rgba(255,255,255,.05)}
+.rpg-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem}
+.rpg-results .resultCard{border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:.85rem;background:rgba(255,255,255,.05)}
+
+
+.setup-callout{
+  border:2px solid rgba(56,189,248,.6);
+  background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(255,255,255,.05));
+}
+.setup-callout h2{margin-top:0}
+.rpg-wizard{position:fixed;inset:0;z-index:9999;overflow:auto;background:#080d19;color:white;padding:1rem}
+.rpg-wizard.hidden{display:none}
+.rpg-step{display:none;max-width:760px;margin:1rem auto;padding:1rem;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.06)}
+.rpg-step.active{display:block}
+.rpg-progress{max-width:760px;height:10px;margin:1rem auto;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}
+.rpg-progress div{height:100%;width:0;background:linear-gradient(90deg,#2563eb,#38bdf8)}
+.choiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin:1rem 0}
+.choiceList{display:grid;gap:.75rem;margin:1rem 0}
+.choiceGrid button,.choiceList button{min-height:64px;text-align:left}
+.choiceGrid button.selected,.choiceList button.selected{border-color:#38bdf8;background:rgba(37,99,235,.35)}
