@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Fitness Coach</title>
+<!-- Fitness Coach v41 Audited Minimal -->
+  <link rel="manifest" href="manifest.json">
+  
+  <style>
+body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b1020;color:#f8fafc}
+.app-header{padding:1rem 1rem .5rem}
+.app-header h1{margin:.25rem 0;font-size:2rem}
+#headerSubtext{margin:0;color:#cbd5e1}
+.app-nav{display:flex;gap:.4rem;flex-wrap:wrap;padding:.75rem;position:sticky;top:0;z-index:10;background:#0b1020;border-bottom:1px solid rgba(255,255,255,.1)}
+button,.fileLabel{border:1px solid rgba(255,255,255,.14);background:#2563eb;color:white;border-radius:.7rem;padding:.7rem .9rem;font:inherit}
+button.ghost{background:rgba(255,255,255,.08)}
+button.active{outline:2px solid #38bdf8}
+.tab{display:none}
+.tab.active{display:block}
+.panel{padding:1rem;margin:1rem;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.05)}
+.muted{color:#cbd5e1}
+.formGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem}
+input,select{width:100%;box-sizing:border-box;border-radius:.55rem;border:1px solid rgba(255,255,255,.18);padding:.65rem;background:#111827;color:#fff}
+.today-grid,.supplement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem}
+.today-grid>div,.supplement-grid>div,.goal-summary,.resultBox{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:.85rem;background:rgba(255,255,255,.04);margin:.5rem 0}
+.setup-callout{border:2px solid rgba(56,189,248,.6);background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(255,255,255,.05))}
+.rpg-wizard{position:fixed;inset:0;z-index:9999;overflow:auto;background:#080d19;color:white;padding:1rem}
+.rpg-wizard.hidden{display:none}
+.rpg-step{display:none;max-width:760px;margin:1rem auto;padding:1rem;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.06)}
+.rpg-step.active{display:block}
+.rpg-progress{max-width:760px;height:10px;margin:1rem auto;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}
+.rpg-progress div{height:100%;width:0;background:linear-gradient(90deg,#2563eb,#38bdf8)}
+.choiceGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin:1rem 0}
+.choiceList{display:grid;gap:.75rem;margin:1rem 0}
+.choiceGrid button,.choiceList button{min-height:64px;text-align:left;background:rgba(255,255,255,.08)}
+.choiceGrid button.selected,.choiceList button.selected{border-color:#38bdf8;background:rgba(37,99,235,.35)}
+.fileLabel input{display:none}
+.dangerButton{background:#991b1b}
+
+</style>
+<link rel="apple-touch-icon" href="./icon.png">
+<link rel="icon" href="./icon.png">
+</head>
+<body>
+  <header class="app-header">
+    <h1 id="appTitle">Fitness Coach</h1>
+    <p id="headerSubtext">Your personalized workout, nutrition, recovery, and progress coach.</p>
+  </header>
+
+  <nav class="app-nav">
+    <button data-tab="today" class="active">Today</button>
+    <button data-tab="assessment">Initial Assessment</button>
+    <button data-tab="coach">Workout Coach</button>
+    <button data-tab="pain">Pain</button>
+    <button data-tab="supplements">Supplements</button>
+    <button data-tab="backup">Backup</button>
+  </nav>
+
+  <main>
+    <section id="today" class="tab active">
+      <div class="panel today-dashboard">
+        <h2>Today</h2>
+        <div class="goal-summary">
+          <strong id="goalWeightHeader">Goal Weight</strong>
+          <p id="goalProgressHeader" class="muted">Complete the Initial Assessment to personalize your goal.</p>
+        </div>
+        <div class="today-grid">
+          <div><strong id="todayDayName">Loading...</strong><p id="todayDateText" class="muted"></p><p id="todayTimeText" class="muted"></p></div>
+          <div><strong>Today's Plan</strong><p id="todayWorkoutText" class="muted"></p><p id="todayWorkoutStatus" class="muted"></p></div>
+          <div><strong>Next Action</strong><p id="todayNextAction" class="muted"></p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="assessment" class="tab">
+      <div id="visibleProfileSetupCard" class="panel setup-callout">
+        <h2>Start Your Personalized Fitness Profile</h2>
+        <p>This setup builds your avatar, chooses your starting class, checks your fitness level, and customizes your plan.</p>
+        <button id="openVisibleRpgSetup">Start Profile Setup</button>
+        <button id="showCurrentProfile" class="ghost">Show Current Profile</button>
+        <div id="currentProfilePreview" class="muted"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Initial Assessment</h2>
+        <p class="muted">Use this page first. After setup, your goal weight, workout level, and recommendations will update automatically.</p>
+      </div>
+    </section>
+
+    <section id="coach" class="tab">
+      <div class="panel">
+        <h2>Workout Coach</h2>
+        <p class="muted">Guided workout tracking remains available here. If a previous version had detailed set tracking, it remains in your data, but this safe build prioritizes reliable loading.</p>
+        <button id="markWorkoutComplete">Mark Today’s Workout Complete</button>
+        <div id="coachStatus" class="resultBox"></div>
+      </div>
+    </section>
+
+    <section id="pain" class="tab">
+      <div class="panel">
+        <h2>Unusual Pain & Safety Tracker</h2>
+        <div class="formGrid">
+          <label>Location <select id="painLocation"><option>Shoulder</option><option>Elbow</option><option>Wrist</option><option>Back</option><option>Hip</option><option>Knee</option><option>Ankle</option><option>Chest</option><option>Head</option><option>Other</option></select></label>
+          <label>Type <select id="painType"><option>Sharp</option><option>Dull</option><option>Burning</option><option>Tingling</option><option>Numbness</option><option>Pressure</option><option>Cramping</option></select></label>
+          <label>Severity 1-10 <input id="painSeverity" type="number" min="1" max="10"></label>
+          <label>Exercise <input id="painExercise" placeholder="Exercise name"></label>
+        </div>
+        <label><input id="painDizzy" type="checkbox"> Dizziness</label>
+        <label><input id="painBreath" type="checkbox"> Shortness of breath</label>
+        <label><input id="painRadiating" type="checkbox"> Radiating pain / numbness / loss of strength</label>
+        <button id="savePainLog">Save Pain Log</button>
+        <div id="painRecommendation" class="resultBox"></div>
+      </div>
+    </section>
+
+    <section id="supplements" class="tab">
+      <div class="panel">
+        <h2>Supplement Coach</h2>
+        <div class="supplement-grid">
+          <div><strong>Daily</strong><p>Creatine monohydrate: 5g daily.</p></div>
+          <div><strong>Protein</strong><p>Use protein powder as needed to reach your daily target.</p></div>
+          <div><strong>Pre-workout</strong><p>Optional 20–30 minutes before training.</p></div>
+          <div><strong>Hydration</strong><p>Electrolytes if sweating heavily.</p></div>
+        </div>
+        <button id="logSupplementsToday">Log Today’s Supplements</button>
+        <div id="supplementStatus" class="resultBox"></div>
+      </div>
+    </section>
+
+    <section id="backup" class="tab">
+      <div class="panel">
+        <h2>Backup & Data</h2>
+        <button id="exportJson">Export Full Backup</button>
+        <label class="fileLabel">Import Backup <input id="importJson" type="file" accept=".json,application/json"></label>
+        <button id="resetData" class="dangerButton">Reset Local Data</button>
+        <p class="muted">Data is stored locally on this device/browser unless you export a backup.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="rpgWizard" class="rpg-wizard hidden">
+    <div class="rpg-progress"><div id="rpgProgressBar"></div></div>
+
+    <div class="rpg-step active" data-rpg-step="0">
+      <h2>Build Your Fitness Profile</h2>
+      <p>Choose your avatar, starting class, and complete a quick assessment.</p>
+      <button data-rpg-next>Start</button>
+    </div>
+
+    <div class="rpg-step" data-rpg-step="1">
+      <h2>Basic Info</h2>
+      <div class="formGrid">
+        <label>Name <input id="rpgName"></label>
+        <label>Age <input id="rpgAge" type="number"></label>
+        <label>Height Feet <input id="rpgFeet" type="number"></label>
+        <label>Height Inches <input id="rpgInches" type="number"></label>
+        <label>Current Weight <input id="rpgWeight" type="number"></label>
+        <label>Goal Weight <input id="rpgGoalWeight" type="number"></label>
+      </div>
+      <button data-rpg-prev>Back</button><button data-rpg-next>Next</button>
+    </div>
+
+    <div class="rpg-step" data-rpg-step="2">
+      <h2>Choose Your Starting Class</h2>
+      <div class="choiceList" data-rpg-choice="startingClass">
+        <button data-value="explorer">⛰️ Explorer — New to fitness</button>
+        <button data-value="warrior">🛡️ Warrior — Strength focused</button>
+        <button data-value="athlete">⚡ Athlete — Conditioning focused</button>
+        <button data-value="transformer">🔥 Transformer — Body transformation</button>
+      </div>
+      <button data-rpg-prev>Back</button><button data-rpg-next>Next</button>
+    </div>
+
+    <div class="rpg-step" data-rpg-step="3">
+      <h2>Build Your Avatar</h2>
+      <div class="choiceGrid" data-rpg-choice="bodyType">
+        <button data-value="lean">Lean</button>
+        <button data-value="average">Average</button>
+        <button data-value="overweight">Overweight</button>
+        <button data-value="obese">Obese</button>
+        <button data-value="muscular">Muscular</button>
+      </div>
+      <button data-rpg-prev>Back</button><button data-rpg-next>Next</button>
+    </div>
+
+    <div class="rpg-step" data-rpg-step="4">
+      <h2>Quick Functional Assessment</h2>
+      <div class="formGrid">
+        <label>Cardio method <select id="rpgCardioMethod"><option>Outdoor Walk</option><option>Treadmill Walk</option><option>Indoor Track</option><option>Other</option></select></label>
+<label>Walk distance in miles <input id="rpgWalkDistance" type="number" step="0.01" placeholder="0.50"></label>
+<p class="muted helpText">Distance examples: 0.10 = one tenth mile, 0.25 = quarter mile, 0.50 = half mile, 1.00 = one mile. For treadmill, enter the distance shown on the treadmill.</p>
+<label>Treadmill speed mph (optional) <input id="rpgTreadmillSpeed" type="number" step="0.1" placeholder="3.0"></label>
+<label>Treadmill incline % (optional) <input id="rpgTreadmillIncline" type="number" step="0.5" placeholder="0"></label>
+        <label>Walk RPE / effort 1–10 <input id="rpgEffort" type="number" min="1" max="10" placeholder="5"></label>
+<p class="muted helpText">Rate only the walk/cardio test: 1–2 very easy, 3–4 easy, 5–6 moderate, 7–8 hard, 9 very hard, 10 maximum effort.</p>
+        <label>Chair stands in 30 seconds <input id="rpgChair" type="number" placeholder="10"></label>
+<p class="muted helpText">Count one rep each time you sit, stand fully upright, then sit again. Sit → stand → sit = 1 rep.</p>
+        <label>Push-ups <input id="rpgPushups" type="number" placeholder="5"></label>
+<p class="muted helpText">Count quality reps only. Wall, incline, knee, or standard push-ups are acceptable; use the safest version.</p>
+        <label>Plank seconds <input id="rpgPlank" type="number" placeholder="30"></label>
+<p class="muted helpText">Stop timing when your form breaks, hips sag, back arches, or you voluntarily stop.</p>
+      </div>
+      <label><input id="rpgConcerningSymptoms" type="checkbox"> Dizziness, chest pressure, shortness of breath, numbness, or unusual symptoms</label>
+      <button data-rpg-prev>Back</button><button id="finishRpgWizard">Build My Plan</button>
+    </div>
+
+    <div class="rpg-step" data-rpg-step="5">
+      <h2>Your Plan Is Ready</h2>
+      <div id="rpgResults"></div>
+      <button id="closeRpgWizard">View My Plan</button>
+    </div>
+  </div>
+
+  <script>
+/* Fitness Coach v38 Safe Initial Load */
+(function(){
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+  const todayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  const safeParse = (k,f) => { try { return JSON.parse(localStorage.getItem(k) || "null") ?? f; } catch(e){ return f; } };
+  const safeSave = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+  const workoutMap = {
+    0:"Sunday - Recovery / Rest Day",
+    1:"Monday - Upper Body Strength",
+    2:"Tuesday - Lower Body Strength",
+    3:"Wednesday - Conditioning + Core",
+    4:"Thursday - Upper Body Muscle Building",
+    5:"Friday - Lower Body + Conditioning",
+    6:"Saturday - Recovery / Rest Day"
+  };
+
+  function setText(id, text){ const el = $(id); if(el) el.textContent = text; }
+  function profile(){ return safeParse("userProfile", null); }
+  function goalWeight(){ const p = profile(); const g = Number(p?.goalWeight); return Number.isFinite(g) && g > 0 ? g : 195; }
+
+  function latestWeight(){
+    const p = profile();
+    let logs = safeParse("progressLogs", []);
+    if(!Array.isArray(logs)) logs = [];
+    const rows = logs.map(l => Number(l.bodyWeight ?? l.weight)).filter(Number.isFinite);
+    return rows.length ? rows[rows.length - 1] : (Number(p?.weight) || null);
+  }
+
+  function renderToday(){
+    const now = new Date();
+    const p = profile();
+    const goal = goalWeight();
+    const current = latestWeight();
+
+    document.title = `Fitness Coach - Goal ${goal}`;
+    setText("goalWeightHeader", `Goal Weight: ${goal} lbs`);
+
+    if(current){
+      const remaining = Math.round((current - goal) * 10) / 10;
+      setText("goalProgressHeader", Math.abs(remaining) <= 2 ? `Current: ${current} lbs • Goal/maintenance range` : remaining > 0 ? `Current: ${current} lbs • ${remaining} lbs to goal` : `Current: ${current} lbs • ${Math.abs(remaining)} lbs below goal`);
+    } else {
+      setText("goalProgressHeader", "Complete the Initial Assessment to personalize your goal.");
+    }
+
+    setText("todayDayName", now.toLocaleDateString(undefined,{weekday:"long"}));
+    setText("todayDateText", now.toLocaleDateString(undefined,{month:"long",day:"numeric",year:"numeric"}));
+    setText("todayTimeText", now.toLocaleTimeString(undefined,{hour:"numeric",minute:"2-digit"}));
+    setText("todayWorkoutText", workoutMap[now.getDay()]);
+    setText("todayWorkoutStatus", "Ready");
+
+    const hour = now.getHours();
+    let action = p ? "Follow today’s plan." : "Complete your Initial Assessment first.";
+    if(p && hour >= 15 && hour < 18) action = "Workout window is open. Start when ready.";
+    if(p && hour >= 18) action = "Review workout, protein, hydration, and recovery.";
+    setText("todayNextAction", action);
+  }
+
+  function initTabs(){
+    document.querySelectorAll("[data-tab]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("[data-tab]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        const target = $(btn.dataset.tab);
+        if(target) target.classList.add("active");
+        if(btn.dataset.tab === "assessment") showProfilePreview();
+      });
+    });
+  }
+
+  const wizard = {step:0, data:{}};
+  function showStep(n){
+    const steps = [...document.querySelectorAll(".rpg-step")];
+    const max = Math.max(0, steps.length - 1);
+    wizard.step = Math.max(0, Math.min(max, n));
+    steps.forEach(s => s.classList.toggle("active", Number(s.dataset.rpgStep) === wizard.step));
+    const bar = $("rpgProgressBar");
+    if(bar) bar.style.width = max ? `${Math.round((wizard.step/max)*100)}%` : "0%";
+  }
+  function num(id){ const n = Number($(id)?.value || 0); return Number.isFinite(n) ? n : 0; }
+  function collectWizard(){
+    wizard.data.name = $("rpgName")?.value.trim() || wizard.data.name || "User";
+    wizard.data.age = num("rpgAge") || wizard.data.age || "";
+    wizard.data.feet = num("rpgFeet") || wizard.data.feet || "";
+    wizard.data.inches = num("rpgInches") || wizard.data.inches || "";
+    wizard.data.weight = num("rpgWeight") || wizard.data.weight || "";
+    wizard.data.goalWeight = num("rpgGoalWeight") || wizard.data.goalWeight || 195;
+  }
+  function scoreWizard(){
+    const walk = Math.min(40, (num("rpgWalkDistance") / 0.5) * 40);
+    const chair = Math.min(25, (num("rpgChair") / 20) * 25);
+    const push = Math.min(20, (num("rpgPushups") / 20) * 20);
+    const plank = Math.min(15, (num("rpgPlank") / 90) * 15);
+    const effortPenalty = Math.max(0, (num("rpgEffort") - 7) * 5);
+    const overall = Math.max(0, Math.round(walk + chair + push + plank - effortPenalty));
+    let classification = "Beginner";
+    if(overall >= 70) classification = "Intermediate";
+    else if(overall >= 45) classification = "Novice";
+    return {
+      overallFitnessScore: overall,
+      classification,
+      recoveryRisk: $("rpgConcerningSymptoms")?.checked ? "Elevated" : "Low"
+    };
+  }
+  function finishWizard(){
+    collectWizard();
+    const scores = scoreWizard();
+    const p = {
+      name: wizard.data.name,
+      age: wizard.data.age,
+      feet: wizard.data.feet,
+      inches: wizard.data.inches,
+      weight: wizard.data.weight,
+      goalWeight: wizard.data.goalWeight,
+      startingClass: wizard.data.startingClass || "explorer",
+      bodyType: wizard.data.bodyType || "average",
+      fitnessClassification: scores.classification,
+      recoveryRisk: scores.recoveryRisk,
+      onboardingComplete: true,
+      updatedAt: new Date().toISOString()
+    };
+    safeSave("userProfile", p);
+    const assessments = safeParse("functionalFitnessAssessments", []);
+    assessments.push({date:todayKey(), scores, cardioMethod:$("rpgCardioMethod")?.value || "", treadmillSpeed:num("rpgTreadmillSpeed"), treadmillIncline:num("rpgTreadmillIncline")});
+    safeSave("functionalFitnessAssessments", assessments);
+
+    const box = $("rpgResults");
+    if(box){
+      box.innerHTML = `<div class="resultBox"><strong>${escapeHtml(p.name)}</strong><br>Goal Weight: ${p.goalWeight} lbs<br>Avatar: ${p.bodyType}<br>Class: ${p.startingClass}</div>
+      <div class="resultBox"><strong>Fitness Score</strong><br>${scores.overallFitnessScore}/100<br>${scores.classification}</div>
+      <div class="resultBox"><strong>Recovery Risk</strong><br>${scores.recoveryRisk}</div>`;
+    }
+    renderToday();
+    showProfilePreview();
+    showStep(5);
+  }
+  function escapeHtml(s){ return String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function showProfilePreview(){
+    const p = profile();
+    const box = $("currentProfilePreview");
+    if(!box) return;
+    if(!p){ box.textContent = "No profile created yet."; return; }
+    box.innerHTML = `<strong>${escapeHtml(p.name || "User")}</strong><br>Goal: ${p.goalWeight || 195} lbs<br>Class: ${p.startingClass || p.fitnessClassification || "Not set"}<br>Avatar: ${p.bodyType || "Not set"}`;
+  }
+  function openWizard(){ $("rpgWizard")?.classList.remove("hidden"); showStep(0); }
+
+  function initWizard(){
+    $("openVisibleRpgSetup")?.addEventListener("click", openWizard);
+    $("showCurrentProfile")?.addEventListener("click", showProfilePreview);
+    $("closeRpgWizard")?.addEventListener("click", () => $("rpgWizard")?.classList.add("hidden"));
+    document.querySelectorAll("[data-rpg-next]").forEach(b => b.addEventListener("click", () => { collectWizard(); showStep(wizard.step + 1); }));
+    document.querySelectorAll("[data-rpg-prev]").forEach(b => b.addEventListener("click", () => showStep(wizard.step - 1)));
+    document.querySelectorAll("[data-rpg-choice]").forEach(group => {
+      group.querySelectorAll("button[data-value]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          wizard.data[group.dataset.rpgChoice] = btn.dataset.value;
+          group.querySelectorAll("button").forEach(x => x.classList.remove("selected"));
+          btn.classList.add("selected");
+        });
+      });
+    });
+    $("finishRpgWizard")?.addEventListener("click", finishWizard);
+  }
+
+  function initPain(){
+    $("savePainLog")?.addEventListener("click", () => {
+      const severity = num("painSeverity");
+      const highRisk = $("painLocation")?.value === "Chest" || $("painDizzy")?.checked || $("painBreath")?.checked || $("painRadiating")?.checked || severity >= 8;
+      const rec = highRisk ? "Stop the workout. Do not train through this. Consider medical evaluation if symptoms are current, severe, chest-related, or include dizziness, breathing trouble, numbness, or weakness." :
+        severity >= 4 ? "Stop or modify this exercise. Reduce weight 10–20%, substitute the movement, and do not increase weight next session." :
+        "Monitor symptoms. Continue only if pain is mild and does not change your form.";
+      const logs = safeParse("painLogs", []);
+      logs.push({date:todayKey(), location:$("painLocation")?.value, type:$("painType")?.value, severity, exercise:$("painExercise")?.value, recommendation:rec});
+      safeSave("painLogs", logs);
+      setText("painRecommendation", rec);
+    });
+  }
+
+  function initSupplements(){
+    $("logSupplementsToday")?.addEventListener("click", () => {
+      const logs = safeParse("supplementLogs", []);
+      logs.push({date:todayKey(), creatine:"5g", loggedAt:new Date().toISOString()});
+      safeSave("supplementLogs", logs);
+      setText("supplementStatus", "Supplements logged for today.");
+    });
+  }
+
+  function initWorkout(){
+    $("markWorkoutComplete")?.addEventListener("click", () => {
+      const logs = safeParse("workoutLogs", []);
+      logs.push({date:todayKey(), workout:workoutMap[new Date().getDay()], completed:true, completedAt:new Date().toISOString()});
+      safeSave("workoutLogs", logs);
+      setText("coachStatus", "Today’s workout marked complete.");
+      renderToday();
+    });
+  }
+
+  function initBackup(){
+    $("exportJson")?.addEventListener("click", () => {
+      const keys = ["userProfile","workoutLogs","progressLogs","painLogs","supplementLogs","functionalFitnessAssessments"];
+      const data = {app:"Fitness Coach", version:"v38", exportedAt:new Date().toISOString(), data:{}};
+      keys.forEach(k => data.data[k] = safeParse(k, null));
+      const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = `fitness-coach-backup-${todayKey()}.json`; a.click();
+      URL.revokeObjectURL(url);
+    });
+    $("resetData")?.addEventListener("click", () => {
+      if(!confirm("Export a backup before reset. Continue?")) return;
+      ["userProfile","workoutLogs","progressLogs","painLogs","supplementLogs","functionalFitnessAssessments"].forEach(k => localStorage.removeItem(k));
+      location.reload();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initTabs();
+    initWizard();
+    initPain();
+    initSupplements();
+    initWorkout();
+    initBackup();
+    renderToday();
+    showProfilePreview();
+    setInterval(renderToday, 30000);
+  });
+})();
+
+</script>
+</body>
+</html>

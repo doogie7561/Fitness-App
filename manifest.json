@@ -1,0 +1,19 @@
+{
+  "name": "Fitness Coach",
+  "short_name": "Fitness",
+  "description": "Personal workout coach, tracker, assessment, recovery, supplement and progress app.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#111827",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
