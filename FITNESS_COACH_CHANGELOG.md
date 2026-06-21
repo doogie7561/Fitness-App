@@ -427,3 +427,18 @@ Security: no API keys, no embedded secrets, no external scripts
 - Stabilized avatar rendering after navigation cleanup.
 - Ensured portrait remains on the Workout page.
 - Ensured compact gear display still renders under the portrait.
+
+
+## Version 86 — Workout Only Stabilization
+### Focus
+- Only the Workout tab was changed.
+- Navigation is visually limited to Workout, Quests, and Settings.
+- Workout was rebuilt as a clean daily-use screen.
+
+### Workout Changes
+- Removed recovery-day setup from Workout.
+- Removed voice-coach settings from Workout.
+- Removed Codex, Progress, Recovery, Supplements, Character, Today, and Assessment from main navigation.
+- Restored avatar, level, XP, status bars, and compact gear at the top of Workout.
+- Restored Today's Workout, exercise cards, logging, guided workout, and rest timer.
+- Settings now holds placeholders for rare-use setup items.

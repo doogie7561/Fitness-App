@@ -991,6 +991,201 @@ nav button[data-tab="supplements"],
   }
 }
 
+/* v86 Workout Only Stabilization */
+nav button[data-tab="today"],
+nav button[data-tab="character"],
+nav button[data-tab="assessment"],
+nav button[data-tab="progress"],
+nav button[data-tab="recovery"],
+nav button[data-tab="supplements"],
+nav button[data-tab="codex"],
+#today,#character,#progress,#recovery,#supplements,#codex{
+  display:none!important;
+}
+#assessment{
+  display:none;
+}
+.workout-clean-root{
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+.workout-hero-clean{
+  border:1px solid rgba(56,189,248,.28);
+  border-radius:18px;
+  padding:1rem;
+  background:rgba(56,189,248,.055);
+}
+.workout-hero-layout{
+  display:grid;
+  grid-template-columns:minmax(150px,240px) 1fr;
+  gap:1rem;
+  align-items:start;
+}
+@media(max-width:720px){
+  .workout-hero-layout{grid-template-columns:1fr}
+}
+.workout-status-card{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  padding:.85rem;
+  background:rgba(255,255,255,.045);
+}
+.workout-bar-row{
+  margin:.5rem 0;
+}
+.workout-bar-label{
+  display:flex;
+  justify-content:space-between;
+  font-weight:800;
+  margin-bottom:.2rem;
+}
+.workout-bar-track{
+  height:12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.15);
+  overflow:hidden;
+}
+.workout-bar-fill{
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#38bdf8,#a855f7,#facc15);
+}
+.workout-gear-compact{
+  display:flex;
+  justify-content:space-between;
+  gap:.75rem;
+  align-items:center;
+  border:1px solid rgba(250,204,21,.30);
+  border-radius:14px;
+  padding:.65rem .8rem;
+  background:rgba(250,204,21,.08);
+  margin-top:.75rem;
+}
+.workout-gear-compact strong{display:block}
+.workout-gear-pct{color:#facc15;font-weight:900;white-space:nowrap}
+.workout-daily-card{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  padding:1rem;
+  background:rgba(255,255,255,.045);
+}
+.workout-day-header{
+  display:flex;
+  justify-content:space-between;
+  gap:.75rem;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.workout-focus-pill{
+  display:inline-block;
+  border:1px solid rgba(250,204,21,.35);
+  border-radius:999px;
+  padding:.25rem .65rem;
+  background:rgba(250,204,21,.10);
+  color:#facc15;
+  font-weight:800;
+}
+.exercise-card{
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:16px;
+  padding:.85rem;
+  margin:.75rem 0;
+  background:rgba(0,0,0,.18);
+}
+.exercise-card h4{margin:.1rem 0 .35rem}
+.set-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(92px,1fr));
+  gap:.4rem;
+  margin:.5rem 0;
+}
+.set-pill{
+  border:1px solid rgba(56,189,248,.30);
+  background:rgba(56,189,248,.08);
+  border-radius:10px;
+  padding:.4rem;
+  text-align:center;
+  font-size:.85rem;
+}
+.workout-actions{
+  display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
+  margin-top:.75rem;
+}
+.guided-workout-panel{
+  border:1px solid rgba(168,85,247,.35);
+  border-radius:18px;
+  padding:1rem;
+  background:rgba(168,85,247,.08);
+  margin:1rem 0;
+}
+.guided-stage{font-size:1.05rem;font-weight:900;margin:.4rem 0}
+.rest-timer{font-size:2rem;font-weight:900;color:#facc15;text-align:center;margin:.6rem 0}
+.workout-warning{
+  border:1px solid rgba(239,68,68,.35);
+  border-radius:14px;
+  padding:.75rem;
+  background:rgba(239,68,68,.08);
+  margin:.75rem 0;
+}
+#workoutHiddenLegacy{
+  display:none!important;
+}
+.settings-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:1rem;
+}
+.settings-card{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  padding:1rem;
+  background:rgba(255,255,255,.045);
+}
+.character-portrait-card{
+  width:100%;
+  max-width:240px;
+  height:345px;
+  border-radius:18px;
+  border:2px solid rgba(212,175,55,.78);
+  position:relative;
+  overflow:hidden;
+  background:#071014;
+  margin:0 auto;
+}
+.character-portrait-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.portrait-label{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  padding:.55rem;
+  background:linear-gradient(90deg,rgba(0,0,0,.90),rgba(0,0,0,.60));
+  border-top:1px solid rgba(212,175,55,.5);
+  color:white;
+  text-align:center;
+  font-size:.82rem;
+}
+.recovery-legend-inline{
+  display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
+  justify-content:center;
+  font-size:.82rem;
+  margin:.45rem 0 .2rem;
+}
+.recovery-legend-inline span{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:999px;
+  padding:.2rem .5rem;
+  background:rgba(255,255,255,.055);
+}
+
 </style>
 <!-- AD_NETWORK_SCRIPT_GOES_HERE: Add approved ad network script after approval. -->
 
@@ -1012,7 +1207,6 @@ nav button[data-tab="supplements"],
   <button data-tab="achievements">🏆 Progress</button>
   <button data-tab="pain">🩹 Recovery</button>
   <button data-tab="settings">⚙️ Settings</button>
-  <button data-tab="codex">📖 Codex</button>
 </nav>
 
 <main>

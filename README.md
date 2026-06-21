@@ -211,3 +211,9 @@ Fitness Coach keeps local daily snapshots and periodically offers a manual file 
 - Stabilized avatar rendering.
 - Added body-part recovery overlay to the avatar.
 - Recovery states: Ready, Recovering, Fatigued.
+
+
+## v86
+- Workout tab stabilization pass.
+- Workout, Quests, and Settings are the only visible main tabs.
+- Workout now focuses on avatar/status and today's workout only.
