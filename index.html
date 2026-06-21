@@ -716,7 +716,7 @@ function renderWorkout(){
   const info = CLASSES[classKey];
   const tier = levelTier(p.level);
   const xpPct = p.xpToNext ? pct((p.xp / p.xpToNext) * 100) : 0;
-  const portrait = `${classKey}.png`;
+  const portrait = `${classKey}-v2.png`;
   const bars = p.bars || {};
   const exercises = getExercises();
   const warnings = recoveryWarnings(exercises);
