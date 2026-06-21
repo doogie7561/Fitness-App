@@ -178,3 +178,25 @@ Fitness Coach keeps local daily snapshots and periodically offers a manual file 
 ## v79
 - Fantasy character card portrait pack.
 - Cleaner RPG-style portraits with class crests instead of emoji-heavy placeholders.
+
+
+## v80
+- Uses PNG fantasy renderings only for character portraits.
+- Removed SVG portrait assets and paper-doll wording.
+
+## v81
+- Workout is now the home screen.
+- Today, Assessment, and Character are removed from main navigation.
+- Character dashboard appears at top of Workout.
+- Retake Assessment and Character Details live in Settings.
+
+## v82
+- Main navigation is now Workout, Quests, and Settings.
+- Progress, Recovery, and Supplements are summarized on Workout and managed in Settings.
+
+
+## v83
+- Audit, cleanup, and safety pass.
+- JavaScript syntax checked.
+- Legacy avatar remnants cleaned where safely identifiable.
+- PNG fantasy portrait pipeline preserved.

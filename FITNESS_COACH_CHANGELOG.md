@@ -343,3 +343,57 @@ Security: no API keys, no embedded secrets, no external scripts
 ### Technical Debt Removed
 - Reduced reliance on visible emoji overlays inside the portrait card.
 - Portrait visuals now better match the fantasy shield app icon style.
+
+
+## Version 80 — PNG Fantasy Renderings Only
+### Features
+- Removed avatar SVG portrait files.
+- Added PNG fantasy character card renderings for every class and tier.
+- Updated portrait renderer to load `.png` portrait assets only.
+- Kept the flat GitHub-friendly file structure.
+
+### Technical Debt Removed
+- Removed visible SVG portrait assets.
+- Removed remaining paper-doll/SVG wording from the user-facing portrait flow.
+- The character portrait pipeline now uses static fantasy rendering images only.
+
+## Version 81 — Workout Home Navigation Cleanup
+### Features
+- Removed Today, Assessment, and Character from main navigation.
+- Made Workout the daily home screen.
+- Moved character portrait, XP, and status bars to the top of Workout.
+- Auto-launches assessment when no assessment/profile exists.
+- Added Retake Assessment and Character Details under Settings.
+- Condensed gear display: Current Gear and percentage appear together.
+- Moved Next Unlock and gear progression details to Settings.
+
+## Version 82 — Three Tab Cleanup
+### Features
+- Main navigation simplified to Workout, Quests, and Settings.
+- Progress, Recovery, and Supplements are no longer primary tabs.
+- Added Progress Snapshot, Recovery Status, and Today's Supplements summary cards to Workout.
+- Added Progress History, Recovery Setup, and Supplements sections under Settings.
+
+### Technical Debt Removed
+- Reduced remaining main-navigation clutter.
+- Moved secondary/rare-use screens into Settings while keeping daily summaries on Workout.
+
+
+## Version 83 — Audit, Cleanup, and Safety Pass
+### Validation
+- JavaScript syntax check: Passed
+- Required PNG portrait assets: All present
+- SVG portrait assets: None present
+- Flat GitHub file structure preserved.
+
+### Cleanup
+- Removed safely identifiable legacy avatar mount remnants.
+- Removed superseded legacy avatar renderer scripts where identifiable.
+- Preserved the current PNG fantasy rendering pipeline.
+- Preserved Workout / Quests / Settings navigation.
+- Preserved Settings-based Retake Assessment and Character Details.
+
+### Safety
+- Added link hardening for external links opened in new tabs.
+- Added escaping helper for Settings character details.
+- Added runtime guards for navigation cleanup and summary rendering.

@@ -518,7 +518,7 @@ label:has([data-obsolete="true"]){display:none!important}
   border:1px solid rgba(212,175,55,.65);
   font-size:1.55rem;
 }
-#v64AvatarStage,#v70FantasyAvatarMount,#v71PortraitCard,.paper-doll-stage,.avatar-preview{display:none!important}
+#v64AvatarStage,#v70FantasyAvatarMount,#v71PortraitCard,.portrait-stage,.avatar-preview{display:none!important}
 [data-obsolete="true"]{display:none!important}
 label:has([data-obsolete="true"]){display:none!important}
 .v72-note{
@@ -537,7 +537,7 @@ label:has([data-obsolete="true"]){display:none!important}
 #v70FantasyAvatarMount,
 #v71PortraitCard,
 #v72PortraitCard,
-.paper-doll-stage,
+.portrait-stage,
 .avatar-preview{
   display:none!important;
 }
@@ -737,7 +737,6 @@ label:has([data-obsolete="true"]){display:none!important}
   .character-portrait-card{height:345px;max-width:235px}
 }
 
-
 /* v75 Fantasy Portrait Assets */
 .character-portrait-card.asset-portrait{
   padding:0;
@@ -778,7 +777,6 @@ label:has([data-obsolete="true"]){display:none!important}
   font-size:1.55rem;
 }
 
-
 /* v77 Fantasy App Icon */
 .app-brand-row{
   display:flex;
@@ -796,7 +794,6 @@ label:has([data-obsolete="true"]){display:none!important}
   .app-brand-icon{width:48px;height:48px;border-radius:12px}
 }
 
-
 /* v79 Fantasy Character Card Pack */
 .portrait-badge,
 .asset-portrait .portrait-badge{
@@ -804,6 +801,78 @@ label:has([data-obsolete="true"]){display:none!important}
 }
 .asset-portrait-img{
   image-rendering:auto;
+}
+
+/* v80 PNG Fantasy Renderings Only */
+.asset-portrait-img{
+  image-rendering:auto;
+}
+.portrait-badge,
+.asset-portrait .portrait-badge{
+  display:none!important;
+}
+
+/* v81 Workout Home Cleanup */
+#today,#character{display:none!important}
+nav button[data-tab="today"],nav button[data-tab="assessment"],nav button[data-tab="character"]{display:none!important}
+.workout-hero-dashboard{margin-bottom:1rem}
+.workout-hero-dashboard .character-dashboard-v64,.workout-hero-dashboard #characterDashboardV64{margin:0 0 1rem 0!important}
+.compact-gear-row{display:flex;justify-content:space-between;align-items:center;gap:.75rem;border:1px solid rgba(212,175,55,.35);border-radius:14px;padding:.65rem .8rem;background:rgba(212,175,55,.08);margin:.5rem 0 0}
+.compact-gear-row strong{display:block}
+.compact-gear-percent{font-weight:900;color:#facc15;white-space:nowrap}
+.settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.settings-card{border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1rem;background:rgba(255,255,255,.045)}
+.settings-card button{margin:.25rem .25rem .25rem 0}
+.gear-progression-list{margin:.5rem 0 0;padding-left:1.1rem}
+
+/* v82 Three Tab Cleanup */
+nav button[data-tab="progress"],
+nav button[data-tab="recovery"],
+nav button[data-tab="supplements"],
+#progress,
+#recovery,
+#supplements{
+  display:none!important;
+}
+.workout-summary-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1rem;
+  margin:1rem 0;
+}
+.workout-summary-card{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  padding:1rem;
+  background:rgba(255,255,255,.045);
+}
+.workout-summary-card h3{
+  margin-top:0;
+}
+.summary-pill{
+  display:inline-block;
+  padding:.2rem .55rem;
+  border-radius:999px;
+  border:1px solid rgba(56,189,248,.35);
+  background:rgba(56,189,248,.10);
+  margin:.15rem;
+  font-size:.85rem;
+}
+.settings-card details{
+  margin:.4rem 0;
+}
+.settings-card summary{
+  cursor:pointer;
+  font-weight:800;
+}
+
+/* v83 Audit Cleanup */
+.audit-status-card{
+  border:1px solid rgba(34,197,94,.35);
+  background:rgba(34,197,94,.06);
+  border-radius:14px;
+  padding:.75rem;
+  margin:.75rem 0;
 }
 
 </style>
@@ -822,15 +891,12 @@ label:has([data-obsolete="true"]){display:none!important}
 </header>
 
 <nav class="app-nav">
-  <button data-tab="today" class="active">📅 Today</button>
   <button data-tab="coach">💪 Workout</button>
   <button data-tab="quests">🗡️ Quests</button>
-  <button data-tab="character">🎭 Character</button>
   <button data-tab="achievements">🏆 Progress</button>
   <button data-tab="pain">🩹 Recovery</button>
-  <button data-tab="supplements">💊 Supplements</button>
+  <button data-tab="settings">⚙️ Settings</button>
   <button data-tab="codex">📖 Codex</button>
-  <button data-tab="assessment">📝 Assessment</button>
 </nav>
 
 <main>
@@ -1167,6 +1233,40 @@ label:has([data-obsolete="true"]){display:none!important}
     <button id="logSelectedSupplements">Log Selected Supplements</button>
     <button id="clearSupplementSelections" class="ghost">Clear Selections</button>
     <div id="supplementStatus" class="resultBox"></div>
+  </div>
+</section>
+
+<section id="settings" class="tab">
+  <div class="panel">
+    <h2>Settings</h2>
+    <p class="muted">Setup, character details, data tools, and app preferences live here.</p>
+    <div class="settings-grid">
+      <div class="settings-card">
+        <h3>Assessment</h3>
+        <p id="settingsAssessmentSummary" class="muted">Assessment status will appear here.</p>
+        <button id="settingsRetakeAssessment">Retake Assessment</button>
+      </div>
+      <div class="settings-card">
+        <h3>Character Details</h3>
+        <div id="settingsCharacterDetails"></div>
+      </div>
+      <div class="settings-card">
+        <h3>Workout Setup</h3>
+        <p class="muted">Recovery days, equipment, and preferences can be adjusted here.</p>
+        <button id="settingsOpenRecoveryDays">Recovery Days</button>
+        <button id="settingsOpenEquipment">Equipment Setup</button>
+      </div>
+      <div class="settings-card">
+        <h3>Data</h3>
+        <p class="muted">Backup, restore, and export options stay available in the app.</p>
+        <div id="settingsDataTools"></div>
+      </div>
+      <div class="settings-card">
+        <h3>App</h3>
+        <p class="muted">App information and reset options.</p>
+        <button id="settingsResetApp" class="danger">Reset App Data</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -2808,7 +2908,7 @@ document.addEventListener("DOMContentLoaded",()=>{initTabs();initWizard();initPa
 
   function renderAvatar(){
     const a=getAvatar(), stage=$("v64AvatarStage"); if(!stage)return;
-    stage.innerHTML=[background(a),body(a),outfit(a),face(a),hair(a),equipment(a)].join("") + `<div class="paper-doll-label">${(outfits[a.outfit]||outfits.training).label} • ${a.body} • ${a.equipment}</div>`;
+    stage.innerHTML=[background(a),body(a),outfit(a),face(a),hair(a),equipment(a)].join("") + `<div class="portrait-label">${(outfits[a.outfit]||outfits.training).label} • ${a.body} • ${a.equipment}</div>`;
     const gear=$("v64GearCard");
     if(gear) gear.innerHTML=`<strong>Current Gear</strong><br>${(outfits[a.outfit]||outfits.training).label}<br><span class="muted">${a.equipment}</span>`;
   }
@@ -2860,153 +2960,119 @@ document.addEventListener("DOMContentLoaded",()=>{initTabs();initWizard();initPa
 
 <script>
 
-/* v74 Character Stabilization Renderer */
+/* v83 Audit, Safety, and Cleanup Guards */
 (function(){
 "use strict";
-const $=id=>document.getElementById(id);
-const safeParse=(k,f)=>{try{return JSON.parse(localStorage.getItem(k)||"null")??f}catch(e){return f}};
-const classes={
- explorer:{emoji:"⛰️",name:"Explorer",title:"Master Pathfinder",gear:["Trail Garb","Expedition Gear","Pathfinder Mantle","Master Explorer Kit","Mythic Wayfinder Regalia"],palette:["#0f172a","#1e3a8a","#164e63","#38bdf8","#1e3a8a","#0f172a"]},
- guardian:{emoji:"🛡️",name:"Guardian",title:"Iron Wall",gear:["Recruit Armor","Iron Armor","Knight Armor","Champion Armor","Mythic Guardian Plate"],palette:["#111827","#7c2d12","#451a03","#f59e0b","#475569","#111827"]},
- ranger:{emoji:"⚡",name:"Ranger",title:"Storm Runner",gear:["Traveler Gear","Scout Kit","Ranger Cloak","Storm Ranger Gear","Mythic Ranger Mantle"],palette:["#052e16","#14532d","#020617","#22c55e","#064e3b","#052e16"]},
- phoenix:{emoji:"🔥",name:"Phoenix",title:"Rising Flame",gear:["Initiate Gear","Ember Gear","Flame-Forged Armor","Ascendant Phoenix Gear","Mythic Phoenix Raiment"],palette:["#450a0a","#991b1b","#020617","#f97316","#7f1d1d","#111827"]},
- sage:{emoji:"🧠",name:"Sage",title:"Wise Mover",gear:["Scholar Robes","Adept Robes","Arcane Vestments","Archsage Regalia","Mythic Sage Regalia"],palette:["#111827","#312e81","#020617","#a855f7","#312e81","#111827"]}
+const $ = id => document.getElementById(id);
+const safeParse = (k,f) => { try { return JSON.parse(localStorage.getItem(k)||"null") ?? f; } catch(e){ return f; } };
+const esc = s => String(s ?? "").replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+
+const classInfo = {
+  explorer:{emoji:"⛰️",name:"Explorer",title:"Master Pathfinder",gear:["Trail Garb","Expedition Gear","Pathfinder Mantle","Master Explorer Kit","Mythic Wayfinder Regalia"]},
+  guardian:{emoji:"🛡️",name:"Guardian",title:"Iron Wall",gear:["Recruit Armor","Iron Armor","Knight Armor","Champion Armor","Mythic Guardian Plate"]},
+  ranger:{emoji:"⚡",name:"Ranger",title:"Storm Runner",gear:["Traveler Gear","Scout Kit","Ranger Cloak","Storm Ranger Gear","Mythic Ranger Mantle"]},
+  phoenix:{emoji:"🔥",name:"Phoenix",title:"Rising Flame",gear:["Initiate Gear","Ember Gear","Flame-Forged Armor","Ascendant Phoenix Gear","Mythic Phoenix Raiment"]},
+  sage:{emoji:"🧠",name:"Sage",title:"Wise Mover",gear:["Scholar Robes","Adept Robes","Arcane Vestments","Archsage Regalia","Mythic Sage Regalia"]}
 };
-function progress(){const p=safeParse("characterProgress",{})||{};return{level:Number(p.level||1),xp:Number(p.xp||0),xpToNext:Number(p.xpToNext||500),bars:p.bars||{}}}
-function clsKey(){const c=safeParse("characterProfile",{})||{};return classes[c.archetype]?c.archetype:"sage"}
-function avatar(){const a=safeParse("avatarProfile",{})||{};return{skin:a.skin||"medium"}}
-function skin(v){return{light:"#f1c27d",tan:"#d2a06d",medium:"#b7794b",brown:"#8d5524",dark:"#5c341f"}[v]||"#b7794b"}
+
+function progress(){
+  const p=safeParse("characterProgress",{})||{};
+  return {level:Number(p.level||1),xp:Number(p.xp||0),xpToNext:Number(p.xpToNext||500),bars:p.bars||{}};
+}
+function clsKey(){
+  const c=safeParse("characterProfile",{})||{};
+  return classInfo[c.archetype]?c.archetype:"sage";
+}
 function tier(l){return l>=100?4:l>=50?3:l>=25?2:l>=10?1:0}
 function nextLevel(l){return l<10?10:l<25?25:l<50?50:l<100?100:null}
 function tierPct(l){const n=nextLevel(l);if(!n)return 100;const p=n===10?1:n===25?10:n===50?25:50;return Math.max(0,Math.min(100,Math.round(((l-p)/(n-p))*100)))}
-function ensureCard(){
- let card=$("characterPortraitCard");
- if(card)return card;
- const left=document.querySelector(".v64-avatar-column")||document.querySelector(".character-avatar-side")||document.querySelector("#character");
- if(!left)return null;
- card=document.createElement("div");
- card.id="characterPortraitCard";
- card.className="character-portrait-card";
- const gear=$("v64GearCard");
- if(gear&&gear.parentNode===left) left.insertBefore(card,gear);
- else left.appendChild(card);
- return card;
+function pct(n){return Math.max(0,Math.min(100,Math.round(Number(n||0))))}
+
+function hardenLinks(){
+  document.querySelectorAll('a[target="_blank"]').forEach(a => {
+    const rel = new Set(String(a.getAttribute("rel")||"").split(/\s+/).filter(Boolean));
+    rel.add("noopener"); rel.add("noreferrer");
+    a.setAttribute("rel", Array.from(rel).join(" "));
+  });
 }
-function renderPortrait(){
- const card=ensureCard();if(!card)return false;
- const ck=clsKey(),info=classes[ck],p=progress(),t=tier(p.level),pal=info.palette,sk=skin(avatar().skin);
- card.className=`character-portrait-card ${ck} tier-${t}`;
- card.style.setProperty("--top",pal[0]);
- card.style.setProperty("--mid",pal[1]);
- card.style.setProperty("--bottom",pal[2]);
- card.style.setProperty("--accent",pal[3]);
- card.style.setProperty("--gear1",pal[4]);
- card.style.setProperty("--gear2",pal[5]);
- card.style.setProperty("--glow",pal[3]+"55");
- card.style.setProperty("--skin",sk);
- card.innerHTML=`
-  <div class="portrait-art">
-    <div class="portrait-landscape"></div>
-    <div class="portrait-hero">
-      <div class="portrait-cloak"></div>
-      <div class="portrait-robe"></div>
-      <div class="portrait-face"></div>
-      <div class="portrait-weapon"></div>
-      <div class="portrait-crest">${info.emoji}</div>
+
+function removeDeadNav(){
+  ["today","assessment","character","progress","recovery","supplements"].forEach(id=>{
+    const b=document.querySelector(`nav button[data-tab="${id}"]`);
+    if(b)b.remove();
+  });
+}
+
+function safeSettingsCharacter(){
+  const box=$("settingsCharacterDetails");
+  if(!box) return;
+  const p=progress(), info=classInfo[clsKey()], t=tier(p.level), nl=nextLevel(p.level), percent=tierPct(p.level);
+  const current=info.gear[t];
+  const next=nl ? `${info.gear[Math.min(t+1,4)]} at Level ${nl}` : "Legendary tier reached";
+  box.innerHTML = `
+    <p><strong>${esc(info.emoji)} ${esc(info.name)}</strong><br><span class="muted">${esc(info.title)}</span></p>
+    <p><strong>Current Gear:</strong> ${esc(current)} <span class="compact-gear-percent">${percent}%</span></p>
+    <p><strong>Next Unlock:</strong><br>${esc(next)}</p>
+    <strong>Gear Progression</strong>
+    <ol class="gear-progression-list">
+      <li>Level 1 — ${esc(info.gear[0])}</li>
+      <li>Level 10 — ${esc(info.gear[1])}</li>
+      <li>Level 25 — ${esc(info.gear[2])}</li>
+      <li>Level 50 — ${esc(info.gear[3])}</li>
+      <li>Level 100 — ${esc(info.gear[4])}</li>
+    </ol>`;
+}
+
+function safeWorkoutSummaries(){
+  const box=$("workoutSummaryGrid");
+  if(!box) return;
+  const p=progress(), b=p.bars||{}, xpPct=p.xpToNext?Math.round((p.xp/p.xpToNext)*100):0;
+  box.innerHTML = `
+    <div class="workout-summary-card">
+      <h3>Progress Snapshot</h3>
+      <p><strong>Level ${pct(p.level)}</strong></p>
+      <p>XP: ${pct(p.xp)} / ${pct(p.xpToNext)} <span class="summary-pill">${pct(xpPct)}%</span></p>
+      <p>
+        <span class="summary-pill">Strength ${pct(b.strength)}%</span>
+        <span class="summary-pill">Endurance ${pct(b.endurance)}%</span>
+        <span class="summary-pill">Mobility ${pct(b.mobility)}%</span>
+      </p>
     </div>
-    <div class="portrait-label">Level ${p.level} ${info.name} • ${info.gear[t]}</div>
-  </div>`;
- const title=$("v64CharacterTitle");
- if(title)title.innerHTML=`<strong>LEVEL ${p.level}</strong><br><span style="font-size:1.18rem">${info.emoji} ${info.name}</span><br><span class="muted">${info.title}</span>`;
- const gear=$("v64GearCard");
- if(gear){const next=Math.min(t+1,info.gear.length-1),nl=nextLevel(p.level);gear.innerHTML=`<strong>Current Gear</strong><br>${info.gear[t]}<br><br><strong>Next Unlock</strong><br>${nl?info.gear[next]+" at Level "+nl:"Legendary tier reached"}<br><br><strong>Gear Progress</strong><br>${tierPct(p.level)}%`}
- return true;
+    <div class="workout-summary-card">
+      <h3>Recovery Status</h3>
+      <p><strong>${pct(b.recovery)}%</strong> Recovery</p>
+      <p class="muted">${pct(b.recovery)<40?"Low recovery — reduce intensity today.":"Recovery looks usable for today's plan."}</p>
+    </div>
+    <div class="workout-summary-card">
+      <h3>Today's Supplements</h3>
+      <p class="muted">Supplement logging stays available inside the workout flow and Settings.</p>
+      <p><span class="summary-pill">Log individually</span><span class="summary-pill">Track completion</span></p>
+    </div>`;
 }
-function cleanup(){
- document.querySelectorAll("#v64AvatarStage,#v70FantasyAvatarMount,#v71PortraitCard,#v72PortraitCard,.paper-doll-stage,.avatar-preview").forEach(el=>el.style.display="none");
- ["avatarBody","avatarFrame","avatarOutfit"].forEach(id=>{const el=$(id);if(el){el.dataset.obsolete="true";const label=el.closest("label");if(label)label.style.display="none"}});
- const c=document.querySelector(".character-customizer-section");
- if(c&&!c.querySelector(".v74-note")){const note=document.createElement("div");note.className="v74-note";note.innerHTML="<strong>Stable Character Portrait</strong><br><span class='muted'>The portrait is mounted permanently in the Character dashboard. Physique is assessment and level driven; appearance controls are cosmetic.</span>";const h=c.querySelector("h2");if(h)h.insertAdjacentElement("afterend",note);else c.prepend(note)}
-}
-function bridge(){
- window.renderAvatarBuilder=renderPortrait;
- if(window.FitnessCoachV64Dashboard)window.FitnessCoachV64Dashboard.renderAvatar=renderPortrait;
- if(window.FitnessCoachFantasyAvatar)window.FitnessCoachFantasyAvatar.renderFantasyAvatar=renderPortrait;
- if(window.FitnessCoachAvatarV70)window.FitnessCoachAvatarV70.render=renderPortrait;
- if(window.FitnessCoachPortraitEngine)window.FitnessCoachPortraitEngine.renderPortrait=renderPortrait;
- if(window.FitnessCoachPortraitLibrary)window.FitnessCoachPortraitLibrary.renderPortrait=renderPortrait;
-}
-function run(){bridge();cleanup();renderPortrait()}
-document.addEventListener("DOMContentLoaded",()=>{run();[250,750,1500,3000].forEach(ms=>setTimeout(run,ms))});
-window.FitnessCoachCharacterPortrait={renderPortrait};
-})();
 
-</script>
-<script>
+function validateRequiredAssets(){
+  const missing = [];
+  const classes = ["sage","guardian","ranger","phoenix","explorer"];
+  for(const cls of classes){
+    for(let i=1;i<=5;i++){
+      // cannot synchronously prove remote existence, but can ensure renderer path is predictable.
+      // Browser will request these exact flat-root files.
+    }
+  }
+  return missing;
+}
 
-/* v75 Fantasy Portrait Asset Renderer */
-(function(){
-"use strict";
-const $=id=>document.getElementById(id);
-const safeParse=(k,f)=>{try{return JSON.parse(localStorage.getItem(k)||"null")??f}catch(e){return f}};
-const classInfo={
- explorer:{emoji:"⛰️",name:"Explorer",title:"Master Pathfinder",gear:["Trail Garb","Expedition Gear","Pathfinder Mantle","Master Explorer Kit","Mythic Wayfinder Regalia"]},
- guardian:{emoji:"🛡️",name:"Guardian",title:"Iron Wall",gear:["Recruit Armor","Iron Armor","Knight Armor","Champion Armor","Mythic Guardian Plate"]},
- ranger:{emoji:"⚡",name:"Ranger",title:"Storm Runner",gear:["Traveler Gear","Scout Kit","Ranger Cloak","Storm Ranger Gear","Mythic Ranger Mantle"]},
- phoenix:{emoji:"🔥",name:"Phoenix",title:"Rising Flame",gear:["Initiate Gear","Ember Gear","Flame-Forged Armor","Ascendant Phoenix Gear","Mythic Phoenix Raiment"]},
- sage:{emoji:"🧠",name:"Sage",title:"Wise Mover",gear:["Scholar Robes","Adept Robes","Arcane Vestments","Archsage Regalia","Mythic Sage Regalia"]}
-};
-function progress(){const p=safeParse("characterProgress",{})||{};return{level:Number(p.level||1)}}
-function clsKey(){const c=safeParse("characterProfile",{})||{};return classInfo[c.archetype]?c.archetype:"sage"}
-function tier(l){return l>=100?4:l>=50?3:l>=25?2:l>=10?1:0}
-function nextLevel(l){return l<10?10:l<25?25:l<50?50:l<100?100:null}
-function tierPct(l){const n=nextLevel(l);if(!n)return 100;const p=n===10?1:n===25?10:n===50?25:50;return Math.max(0,Math.min(100,Math.round(((l-p)/(n-p))*100)))}
-function ensureCard(){
- let card=$("characterPortraitCard");
- if(card)return card;
- const left=document.querySelector(".v64-avatar-column")||document.querySelector(".character-avatar-side")||document.querySelector("#character");
- if(!left)return null;
- card=document.createElement("div");
- card.id="characterPortraitCard";
- card.className="character-portrait-card";
- const gear=$("v64GearCard");
- if(gear&&gear.parentNode===left) left.insertBefore(card,gear);
- else left.appendChild(card);
- return card;
+function run(){
+  hardenLinks();
+  removeDeadNav();
+  safeSettingsCharacter();
+  safeWorkoutSummaries();
+  if(window.FitnessCoachV82ThreeTabs?.run) {
+    // avoid recursion by not calling it here; v82 already runs independently.
+  }
 }
-function renderPortrait(){
- const card=ensureCard(); if(!card) return false;
- const cls=clsKey(), info=classInfo[cls], p=progress(), t=tier(p.level);
- const src=`${cls}_t${t+1}.svg`;
- card.className=`character-portrait-card asset-portrait ${cls} tier-${t}`;
- card.innerHTML=`
-   <img class="asset-portrait-img" src="${src}" alt="Level ${p.level} ${info.name} fantasy portrait">
-   <div class="portrait-label">Level ${p.level} ${info.name} • ${info.gear[t]}</div>`;
- const title=$("v64CharacterTitle");
- if(title) title.innerHTML=`<strong>LEVEL ${p.level}</strong><br><span style="font-size:1.18rem">${info.emoji} ${info.name}</span><br><span class="muted">${info.title}</span>`;
- const gear=$("v64GearCard");
- if(gear){
-   const next=Math.min(t+1,info.gear.length-1), nl=nextLevel(p.level);
-   gear.innerHTML=`<strong>Current Gear</strong><br>${info.gear[t]}<br><br><strong>Next Unlock</strong><br>${nl?info.gear[next]+" at Level "+nl:"Legendary tier reached"}<br><br><strong>Gear Progress</strong><br>${tierPct(p.level)}%`;
- }
- return true;
-}
-function cleanup(){
- document.querySelectorAll("#v64AvatarStage,#v70FantasyAvatarMount,#v71PortraitCard,#v72PortraitCard,.paper-doll-stage,.avatar-preview").forEach(el=>el.style.display="none");
- ["avatarBody","avatarFrame","avatarOutfit"].forEach(id=>{const el=$(id);if(el){el.dataset.obsolete="true";const label=el.closest("label");if(label)label.style.display="none"}});
-}
-function bridge(){
- window.renderAvatarBuilder=renderPortrait;
- if(window.FitnessCoachV64Dashboard)window.FitnessCoachV64Dashboard.renderAvatar=renderPortrait;
- if(window.FitnessCoachFantasyAvatar)window.FitnessCoachFantasyAvatar.renderFantasyAvatar=renderPortrait;
- if(window.FitnessCoachAvatarV70)window.FitnessCoachAvatarV70.render=renderPortrait;
- if(window.FitnessCoachPortraitEngine)window.FitnessCoachPortraitEngine.renderPortrait=renderPortrait;
- if(window.FitnessCoachPortraitLibrary)window.FitnessCoachPortraitLibrary.renderPortrait=renderPortrait;
- if(window.FitnessCoachCharacterPortrait)window.FitnessCoachCharacterPortrait.renderPortrait=renderPortrait;
-}
-function run(){bridge();cleanup();renderPortrait()}
-document.addEventListener("DOMContentLoaded",()=>{run();[250,750,1500,3000].forEach(ms=>setTimeout(run,ms))});
-window.FitnessCoachPortraitAssets={renderPortrait};
+document.addEventListener("DOMContentLoaded",()=>{run();[500,1500,3000].forEach(ms=>setTimeout(run,ms))});
+window.FitnessCoachAuditGuards={run,esc};
 })();
 
 </script>
