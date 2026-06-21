@@ -397,3 +397,33 @@ Security: no API keys, no embedded secrets, no external scripts
 - Added link hardening for external links opened in new tabs.
 - Added escaping helper for Settings character details.
 - Added runtime guards for navigation cleanup and summary rendering.
+
+
+## Version 84 — Recovery Days Consolidation
+### Bug Fixes
+- Consolidated recovery-day editing into Settings only.
+- Workout keeps only a Recovery Status summary.
+- Recovery Days button in Settings now scrolls to the single recovery-day editor.
+- Recovery days are saved consistently to `recoveryDays`, `userProfile.recoveryDays`, and `weeklyPlan.recoveryDays`.
+
+### Technical Debt Removed
+- Hid duplicate recovery-day setup panels from the Workout page.
+- Reduced duplicate recovery configuration surfaces.
+
+
+## Version 85 — Avatar Stabilization + Recovery Overlay
+### Features
+- Added recovery indicators directly onto the character portrait.
+- Body regions shown: Head, Chest, Back, Arms, Core, Legs.
+- Uses three recovery states only:
+  - Ready
+  - Recovering
+  - Fatigued
+- Tapping a recovery marker shows recovery details and recommendation.
+- Avatar renderer now creates a stable Workout dashboard if the old container is missing.
+- Added fallback message if a portrait image file is missing.
+
+### Bug Fixes
+- Stabilized avatar rendering after navigation cleanup.
+- Ensured portrait remains on the Workout page.
+- Ensured compact gear display still renders under the portrait.

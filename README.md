@@ -200,3 +200,14 @@ Fitness Coach keeps local daily snapshots and periodically offers a manual file 
 - JavaScript syntax checked.
 - Legacy avatar remnants cleaned where safely identifiable.
 - PNG fantasy portrait pipeline preserved.
+
+
+## v84
+- Recovery days are edited only in Settings.
+- Workout only shows recovery status and selected recovery-day summary.
+
+
+## v85
+- Stabilized avatar rendering.
+- Added body-part recovery overlay to the avatar.
+- Recovery states: Ready, Recovering, Fatigued.
