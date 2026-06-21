@@ -1,34 +1,51 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="500" height="700" viewBox="0 0 500 700">
   <defs>
-    <radialGradient id="bg" cx="50%" cy="25%" r="75%">
+    <radialGradient id="bg" cx="50%" cy="24%" r="78%">
       <stop offset="0%" stop-color="#991b1b"/>
-      <stop offset="58%" stop-color="#450a0a"/>
+      <stop offset="54%" stop-color="#450a0a"/>
       <stop offset="100%" stop-color="#020617"/>
     </radialGradient>
-    <filter id="shadow"><feDropShadow dx="0" dy="16" stdDeviation="12" flood-color="#000" flood-opacity=".55"/></filter>
-    <linearGradient id="robe" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0%" stop-color="#7f1d1d"/>
-      <stop offset="100%" stop-color="#020617"/>
+    <linearGradient id="gear" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#991b1b"/>
+      <stop offset="50%" stop-color="#f97316" stop-opacity=".78"/>
+      <stop offset="100%" stop-color="#050816"/>
     </linearGradient>
+    <linearGradient id="gold" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#7c4a03"/>
+      <stop offset="45%" stop-color="#facc15"/>
+      <stop offset="100%" stop-color="#fff3c4"/>
+    </linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="18" stdDeviation="13" flood-color="#000" flood-opacity=".62"/></filter>
   </defs>
-  <rect width="500" height="700" fill="url(#bg)"/>
-  <circle cx="250" cy="220" r="190" fill="#f97316" opacity="0.33999999999999997"/>
-  <circle cx="250" cy="270" r="184" fill="#f97316" opacity="0.13"/>
-  <path d="M0 590 Q250 505 500 590 L500 700 L0 700 Z" fill="rgba(0,0,0,.45)"/>
+  <rect width="500" height="700" rx="38" fill="url(#bg)"/>
+  <rect x="18" y="18" width="464" height="664" rx="32" fill="none" stroke="url(#gold)" stroke-width="10"/>
+  <circle cx="250" cy="238" r="188" fill="#f97316" opacity="0.22999999999999998"/>
+  <circle cx="250" cy="270" r="194" fill="#f97316" opacity="0.11599999999999999"/>
+  <path d="M0 592 Q250 510 500 592 L500 700 L0 700 Z" fill="rgba(0,0,0,.50)"/>
   <g filter="url(#shadow)">
-    <path d="M145 235 Q250 170 355 235 L430 620 L70 620 Z" fill="#020617" opacity=".78" stroke="#f97316" stroke-width="5"/>
-    <path d="M365 240 Q430 310 385 400 Q350 470 306 405 Q270 345 330 292 Q365 262 352 210 Q378 226 365 240Z" fill="#f97316" stroke="#f97316" stroke-width="10"/>
-    <path d="M155 270 Q250 200 345 270 L390 650 L110 650 Z" fill="url(#robe)" stroke="#f97316" stroke-width="8"/>
-    <path d="M180 320 L320 320" stroke="#f97316" stroke-width="8" opacity=".85"/>
-    <circle cx="250" cy="165" r="72" fill="#b7794b" stroke="#f97316" stroke-width="7"/>
-    <path d="M172 155 Q250 70 328 155 Q305 100 250 92 Q195 100 172 155Z" fill="#111827"/>
     
-    <circle cx="225" cy="168" r="7" fill="#111827"/>
-    <circle cx="275" cy="168" r="7" fill="#111827"/>
-    <path d="M224 205 Q250 225 276 205" stroke="#111827" stroke-width="6" fill="none" stroke-linecap="round"/>
-    <text x="250" y="455" text-anchor="middle" font-size="74">🔥</text>
-    <circle cx="170" cy="390" r="6" fill="#f97316" opacity=".8"/><circle cx="210" cy="428" r="6" fill="#f97316" opacity=".8"/><circle cx="250" cy="390" r="6" fill="#f97316" opacity=".8"/>
+        <path d="M360 230 Q442 318 384 428 Q338 512 286 426 Q248 352 320 286 Q356 254 344 198 Q376 216 360 230Z" fill="#f97316" stroke="#fed7aa" stroke-width="8"/>
+        <path d="M352 300 Q386 352 356 404 Q334 438 312 404 Q292 362 330 330 Q350 314 344 284 Q360 294 352 300Z" fill="#fed7aa" opacity=".78"/>
+        
+    
+      <path d="M116.5 238 Q250 150 383.5 238 L438 680 L62 680 Z"
+            fill="#050816" opacity=".76" stroke="#f97316" stroke-width="4"/>
+    
+    <ellipse cx="250" cy="232" rx="124" ry="40" fill="#050816" opacity=".75"/>
+    <path d="M160.5 258 Q250 198 339.5 258 L377.5 660 L122.5 660 Z"
+          fill="url(#gear)" stroke="#facc15" stroke-width="7"/>
+    <path d="M180.5 334 L319.5 334" stroke="#fed7aa" stroke-width="7" opacity=".9"/>
+    <circle cx="250" cy="172" r="69" fill="#b7794b" stroke="#facc15" stroke-width="8"/>
+    <path d="M178 162 Q250 78 322 162 Q302 102 250 94 Q198 102 178 162Z" fill="#111827"/>
+    
+    <circle cx="229" cy="174" r="6" fill="#111827"/>
+    <circle cx="271" cy="174" r="6" fill="#111827"/>
+    <path d="M228 209 Q250 225 272 209" stroke="#111827" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M220 400 L250 356 L280 400 L250 444 Z" fill="#facc15" stroke="#fed7aa" stroke-width="4" opacity=".92"/>
+    <text x="250" y="386" text-anchor="middle" fill="#ffffff" font-family="Georgia,serif" font-size="24" font-weight="700">EMBER</text>
+    <circle cx="130" cy="420" r="7" fill="#f97316" opacity=".72"/><circle cx="178" cy="454" r="7" fill="#f97316" opacity=".72"/><circle cx="226" cy="420" r="7" fill="#f97316" opacity=".72"/>
   </g>
-  <rect x="0" y="618" width="500" height="82" fill="rgba(0,0,0,.62)"/>
-  <text x="250" y="658" text-anchor="middle" fill="#fff" font-family="Georgia,serif" font-size="28">Veteran Phoenix</text>
+  <rect x="0" y="612" width="500" height="88" fill="rgba(0,0,0,.66)"/>
+  <text x="250" y="646" text-anchor="middle" fill="#fff8dc" font-family="Georgia,serif" font-size="27" font-weight="700">Veteran Phoenix</text>
+  <text x="250" y="675" text-anchor="middle" fill="#fed7aa" font-family="Georgia,serif" font-size="19">Flame-Forged Armor</text>
 </svg>
