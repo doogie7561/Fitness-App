@@ -273,3 +273,19 @@ Fitness Coach keeps local daily snapshots and periodically offers a manual file 
 
 ## v101
 - Fixed runtime set-completion UI so set boxes turn green when logged.
+
+
+## v102
+- Removed duplicate avatar aliases.
+- Kept only 10 canonical V3 avatar files using `-m-v3` and `-f-v3`.
+
+## v103
+- Added daily quests, heroic quests, class quests, achievement XP, and hidden cross-class achievements with 25% bonus XP.
+
+
+## v104
+- Restored first-use initial assessment.
+- Retake Assessment now opens the assessment form.
+
+## v105
+- Fixed first-use and Retake Assessment behavior.

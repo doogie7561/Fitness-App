@@ -676,6 +676,139 @@ button[data-log-exercise]:disabled{
   background:#334155;
 }
 
+
+/* v103 Quest + Achievement System */
+.quest-hero{display:grid;gap:1rem;grid-template-columns:1.2fr .8fr;align-items:start}
+.quest-panel{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.035));border-radius:18px;padding:1rem}
+.quest-section{margin:1rem 0 1.35rem}.quest-section h3{margin:.25rem 0 .65rem}.quest-grid{display:grid;gap:.8rem}
+.quest-card{border:1px solid var(--line);border-radius:16px;padding:.85rem;background:rgba(255,255,255,.055);position:relative;overflow:hidden}
+.quest-card.complete{border-color:rgba(34,197,94,.75);box-shadow:0 0 18px rgba(34,197,94,.18)}.quest-card.claimed{opacity:.72}
+.quest-topline{display:flex;justify-content:space-between;gap:.7rem;align-items:flex-start}.quest-title{font-weight:900;font-size:1.02rem}.quest-badges{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:flex-end}
+.quest-badge{border:1px solid var(--line);border-radius:999px;padding:.2rem .45rem;font-size:.72rem;color:var(--muted);background:rgba(255,255,255,.06)}
+.quest-badge.main{border-color:rgba(59,130,246,.45);color:#bfdbfe}.quest-badge.heroic{border-color:rgba(249,115,22,.55);color:#fed7aa}.quest-badge.class{border-color:rgba(168,85,247,.55);color:#e9d5ff}.quest-badge.secret{border-color:rgba(250,204,21,.55);color:#fef08a}
+.quest-progress-bar{height:10px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.12);margin:.65rem 0 .35rem}.quest-progress-fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#22c55e,#a3e635)}
+.quest-reward{color:#dcfce7;font-weight:800;margin:.55rem 0}.quest-actions{display:flex;justify-content:flex-end}.quest-actions button{min-width:120px}.quest-actions button:disabled{background:#334155}
+.achievement-card{border:1px solid var(--line);border-radius:14px;padding:.75rem;background:rgba(255,255,255,.05);margin:.55rem 0}.achievement-card.unlocked{border-color:rgba(34,197,94,.7)}.achievement-card.hidden{border-color:rgba(250,204,21,.55);background:rgba(250,204,21,.07)}
+.achievement-title{font-weight:900}.achievement-reward{color:#fef08a;font-weight:800}.secret-unlock{border:1px solid rgba(250,204,21,.65);border-radius:16px;padding:.85rem;background:linear-gradient(180deg,rgba(250,204,21,.16),rgba(250,204,21,.05));margin:.6rem 0}
+@media(max-width:780px){.quest-hero{grid-template-columns:1fr}}
+
+
+/* v104 First Use Assessment */
+.assessment-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  align-items:flex-start;
+  justify-content:center;
+  overflow:auto;
+  padding:1rem;
+  background:rgba(2,6,23,.88);
+  backdrop-filter:blur(12px);
+}
+.assessment-overlay.active{
+  display:flex;
+}
+.assessment-modal{
+  width:min(760px,100%);
+  margin:1.5rem auto;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:24px;
+  background:linear-gradient(180deg,rgba(15,23,42,.98),rgba(2,6,23,.98));
+  box-shadow:0 24px 80px rgba(0,0,0,.55);
+  padding:1.1rem;
+}
+.assessment-header{
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  align-items:flex-start;
+  margin-bottom:1rem;
+}
+.assessment-header h2{
+  margin:.1rem 0;
+}
+.assessment-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.85rem;
+}
+.assessment-card{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:.8rem;
+  background:rgba(255,255,255,.055);
+}
+.assessment-card.full{
+  grid-column:1/-1;
+}
+.assessment-card label{
+  display:block;
+  margin:.45rem 0;
+}
+.assessment-card select,
+.assessment-card input{
+  width:100%;
+}
+.assessment-class-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:.5rem;
+}
+.assessment-class-choice{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:.7rem .45rem;
+  text-align:center;
+  background:rgba(255,255,255,.05);
+  cursor:pointer;
+}
+.assessment-class-choice input{
+  display:none;
+}
+.assessment-class-choice:has(input:checked){
+  border-color:rgba(34,197,94,.85);
+  box-shadow:0 0 14px rgba(34,197,94,.22);
+  background:rgba(34,197,94,.10);
+}
+.assessment-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:.6rem;
+  margin-top:1rem;
+  flex-wrap:wrap;
+}
+.assessment-note{
+  border:1px solid rgba(34,197,94,.35);
+  border-radius:14px;
+  padding:.7rem;
+  background:rgba(34,197,94,.08);
+  margin:.75rem 0;
+}
+@media(max-width:720px){
+  .assessment-grid{grid-template-columns:1fr}
+  .assessment-class-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+
+/* v105 Assessment Hard Fix */
+.assessment-overlay{position:fixed;inset:0;z-index:99999;display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:1rem;background:rgba(2,6,23,.9);backdrop-filter:blur(12px)}
+.assessment-overlay.active{display:flex}
+.assessment-modal{width:min(760px,100%);margin:1.25rem auto;border:1px solid rgba(255,255,255,.18);border-radius:24px;background:linear-gradient(180deg,rgba(15,23,42,.98),rgba(2,6,23,.98));box-shadow:0 24px 80px rgba(0,0,0,.55);padding:1.1rem}
+.assessment-header{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;margin-bottom:1rem}
+.assessment-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}
+.assessment-card{border:1px solid var(--line);border-radius:16px;padding:.8rem;background:rgba(255,255,255,.055)}
+.assessment-card.full{grid-column:1/-1}
+.assessment-card label{display:block;margin:.45rem 0}
+.assessment-card select,.assessment-card input{width:100%}
+.assessment-class-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.5rem}
+.assessment-class-choice{border:1px solid var(--line);border-radius:14px;padding:.7rem .45rem;text-align:center;background:rgba(255,255,255,.05);cursor:pointer}
+.assessment-class-choice input{display:none}
+.assessment-class-choice:has(input:checked){border-color:rgba(34,197,94,.85);box-shadow:0 0 14px rgba(34,197,94,.22);background:rgba(34,197,94,.10)}
+.assessment-actions{display:flex;justify-content:flex-end;gap:.6rem;margin-top:1rem;flex-wrap:wrap}
+.assessment-note{border:1px solid rgba(34,197,94,.35);border-radius:14px;padding:.7rem;background:rgba(34,197,94,.08);margin:.75rem 0}
+@media(max-width:720px){.assessment-grid{grid-template-columns:1fr}.assessment-class-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 </style>
 </head>
 <body>
@@ -977,7 +1110,7 @@ function renderWorkout(){
         </div>
       </div>
 
-      ${!safeParse("userProfile", null) ? `<div class="empty-state"><strong>Initial setup recommended.</strong><br><span class="muted">Workout is using a safe starter plan. Complete assessment later in Settings to personalize training.</span></div>` : ""}
+      ${!safeParse("userProfile", null) ? `<div class="empty-state"><strong>Initial setup recommended.</strong><br><span class="muted">Complete the initial assessment to personalize your class, avatar, goals, workouts, and quests.</span></div>` : ""}
       <div class="daily-card">
         <div class="workout-head">
           <div>
@@ -1305,16 +1438,147 @@ function renderRest(){
   });
 }
 
+
+const QUEST_CLASS_KEYS = ["sage","guardian","ranger","phoenix","explorer"];
+function titleCaseQuest(value){return String(value||"").replace(/-/g," ").replace(/\b\w/g,c=>c.toUpperCase());}
+function todayWorkoutDoneQuest(){return safeParse("workoutLogs",[]).some(log=>String(log.date||"").startsWith(todayKey()));}
+function todayExerciseLogsQuest(){return safeParse("exerciseLogs",[]).filter(log=>String(log.date||"").startsWith(todayKey()));}
+function todaySetCountQuest(){return todayExerciseLogsQuest().length;}
+function todayCompletedExercisesQuest(){
+  const grouped={};
+  todayExerciseLogsQuest().forEach(log=>{
+    const idx = log.exerciseIndex ?? log.exercise?.name ?? log.exerciseTitle ?? "unknown";
+    const total = Number(log.totalSets || log.exercise?.sets || 3);
+    grouped[idx] = grouped[idx] || {count:0,total};
+    grouped[idx].count += 1;
+    grouped[idx].total = total;
+  });
+  return Object.values(grouped).filter(item=>item.count >= item.total).length;
+}
+function todayAllSetsDoneQuest(){
+  const logs=todayExerciseLogsQuest();
+  if(!logs.length) return false;
+  const grouped={};
+  logs.forEach(log=>{
+    const idx = log.exerciseIndex ?? log.exercise?.name ?? log.exerciseTitle ?? "unknown";
+    const total = Number(log.totalSets || log.exercise?.sets || 3);
+    grouped[idx] = grouped[idx] || {count:0,total};
+    grouped[idx].count += 1;
+    grouped[idx].total = total;
+  });
+  const values=Object.values(grouped);
+  return values.length >= 3 && values.every(item=>item.count >= item.total);
+}
+function questState(){return safeParse(`questState-${todayKey()}`,{claimed:{}});}
+function saveQuestState(state){save(`questState-${todayKey()}`,state);}
+function achievementState(){return safeParse("achievementState",{unlocked:{},stats:{classQuestCounts:{},crossClassCount:0,mainQuestCount:0,heroicQuestCount:0,classQuestCount:0,questDays:{}}});}
+function saveAchievementState(state){save("achievementState",state);}
+function awardQuestXp(xp,bars={}){applyRewards({xp:Number(xp||0),bars:{strength:0,endurance:0,mobility:0,recovery:0,consistency:0,...bars}});}
+function classQuestTemplate(classKey){
+  return ({
+    sage:{title:"Sage Recovery Ritual",desc:"Complete today’s workout while keeping recovery awareness active.",reward:{xp:90,bars:{recovery:5,mobility:3}},mode:"workout",target:1},
+    guardian:{title:"Guardian Strength Oath",desc:"Log at least 6 total sets today.",reward:{xp:90,bars:{strength:5,consistency:3}},mode:"sets",target:6},
+    ranger:{title:"Ranger Endurance Trail",desc:"Fully complete 3 exercise cards today.",reward:{xp:90,bars:{endurance:5,consistency:3}},mode:"exercises",target:3},
+    phoenix:{title:"Phoenix Finish Strong",desc:"Log at least 8 total sets today.",reward:{xp:100,bars:{strength:3,endurance:3}},mode:"sets",target:8},
+    explorer:{title:"Explorer Variety Path",desc:"Fully complete 3 exercise cards today.",reward:{xp:85,bars:{endurance:3,mobility:3}},mode:"exercises",target:3}
+  })[classKey] || classQuestTemplate("guardian");
+}
+function progressForQuestMode(mode){
+  if(mode==="workout") return todayWorkoutDoneQuest()?1:0;
+  if(mode==="sets") return todaySetCountQuest();
+  if(mode==="exercises") return todayCompletedExercisesQuest();
+  if(mode==="allsets") return todayAllSetsDoneQuest()?1:0;
+  return 0;
+}
+function buildDailyQuests(){
+  const userClass=getClassKey();
+  const main=[
+    {id:"main_workout_complete",type:"main",classKey:"general",title:"Complete Today’s Workout",desc:"Finish the workout your coach prepared for today.",progress:todayWorkoutDoneQuest()?1:0,target:1,reward:{xp:60,bars:{consistency:3}}},
+    {id:"main_three_exercises",type:"main",classKey:"general",title:"Log All Sets for 3 Exercises",desc:"Fully complete three exercise cards by logging every set.",progress:todayCompletedExercisesQuest(),target:3,reward:{xp:45,bars:{consistency:2,endurance:2}}}
+  ];
+  const heroic=[
+    {id:"heroic_all_sets",type:"heroic",classKey:"general",title:"Heroic Effort",desc:"Complete every logged exercise card with all sets finished.",progress:todayAllSetsDoneQuest()?1:0,target:1,reward:{xp:125,bars:{strength:4,consistency:4}}},
+    {id:"heroic_extra_sets",type:"heroic",classKey:"guardian",bonusClass:userClass!=="guardian",title:"Extra Steel",desc:"Log 10 total sets today.",progress:todaySetCountQuest(),target:10,reward:{xp:115,bars:{strength:5,consistency:3}}}
+  ];
+  const own=classQuestTemplate(userClass);
+  const classQuest={id:`class_${userClass}_daily`,type:"class",classKey:userClass,title:own.title,desc:own.desc,progress:progressForQuestMode(own.mode),target:own.target,reward:own.reward};
+  const bonus=QUEST_CLASS_KEYS.filter(k=>k!==userClass).slice(0,2).map(k=>{
+    const q=classQuestTemplate(k);
+    return {id:`bonus_${k}_path`,type:"heroic",classKey:k,bonusClass:true,title:`Borrowed Path: ${titleCaseQuest(k)}`,desc:`Complete a ${titleCaseQuest(k)}-style quest outside your chosen class.`,progress:progressForQuestMode(q.mode),target:q.target,reward:{xp:95,bars:{consistency:2}}};
+  });
+  return [...main,...heroic,classQuest,...bonus].map(q=>({...q,progress:Math.max(0,Math.min(Number(q.progress||0),Number(q.target||1)))}));
+}
+function questDone(q){return Number(q.progress||0) >= Number(q.target||1);}
+function questRewardText(q){
+  const parts=[`+${q.reward?.xp||0} XP`];
+  Object.entries(q.reward?.bars||{}).forEach(([k,v])=>{if(v) parts.push(`+${v} ${titleCaseQuest(k)}`);});
+  return parts.join(" • ");
+}
+function achievementXp(a){return a.bonus ? Math.round(a.baseXp*1.25) : a.baseXp;}
+const ACHIEVEMENTS=[
+  {id:"first_main_quest",title:"First Steps",desc:"Complete your first main quest.",baseXp:100,type:"normal",test:s=>(s.stats.mainQuestCount||0)>=1},
+  {id:"three_main_quests",title:"Quest Streak I",desc:"Complete three main quests.",baseXp:150,type:"normal",test:s=>(s.stats.mainQuestCount||0)>=3},
+  {id:"first_heroic",title:"Heroic Effort",desc:"Complete your first optional heroic quest.",baseXp:150,type:"normal",test:s=>(s.stats.heroicQuestCount||0)>=1},
+  {id:"ten_heroic",title:"Heroic Discipline",desc:"Complete ten heroic quests.",baseXp:300,type:"normal",test:s=>(s.stats.heroicQuestCount||0)>=10},
+  {id:"first_class",title:"Class Devotion",desc:"Complete your first class quest.",baseXp:150,type:"normal",test:s=>(s.stats.classQuestCount||0)>=1},
+  {id:"multiclass_initiate",title:"Multiclass Initiate",desc:"Complete a quest outside your chosen class.",baseXp:100,type:"hidden",bonus:true,test:s=>(s.stats.crossClassCount||0)>=1},
+  {id:"well_rounded_hero",title:"Well-Rounded Hero",desc:"Complete at least one quest from every class path.",baseXp:300,type:"hidden",bonus:true,test:s=>QUEST_CLASS_KEYS.every(k=>(s.stats.classQuestCounts||{})[k]>0)},
+  {id:"master_many_paths",title:"Master of Many Paths",desc:"Complete five quests from each class path.",baseXp:600,type:"hidden",bonus:true,test:s=>QUEST_CLASS_KEYS.every(k=>(s.stats.classQuestCounts||{})[k]>=5)}
+];
+function recordQuestAchievementProgress(q){
+  const s=achievementState();
+  s.stats=s.stats||{}; s.stats.classQuestCounts=s.stats.classQuestCounts||{}; s.stats.questDays=s.stats.questDays||{};
+  s.stats.questDays[todayKey()]=true;
+  if(q.type==="main") s.stats.mainQuestCount=Number(s.stats.mainQuestCount||0)+1;
+  if(q.type==="heroic") s.stats.heroicQuestCount=Number(s.stats.heroicQuestCount||0)+1;
+  if(q.type==="class") s.stats.classQuestCount=Number(s.stats.classQuestCount||0)+1;
+  if(q.classKey && q.classKey!=="general") s.stats.classQuestCounts[q.classKey]=Number(s.stats.classQuestCounts[q.classKey]||0)+1;
+  if(q.classKey && q.classKey!=="general" && q.classKey!==getClassKey()) s.stats.crossClassCount=Number(s.stats.crossClassCount||0)+1;
+  const newly=[];
+  ACHIEVEMENTS.forEach(a=>{
+    if(!s.unlocked[a.id] && a.test(s)){
+      const xp=achievementXp(a);
+      s.unlocked[a.id]={date:new Date().toISOString(),xp};
+      newly.push({...a,xp});
+      awardQuestXp(xp,{});
+    }
+  });
+  s.recentUnlocks=newly;
+  saveAchievementState(s);
+}
+function claimQuest(qid){
+  const q=buildDailyQuests().find(item=>item.id===qid);
+  if(!q || !questDone(q)) return;
+  const st=questState();
+  if(st.claimed[qid]) return;
+  st.claimed[qid]=new Date().toISOString();
+  saveQuestState(st);
+  awardQuestXp(q.reward?.xp||0,q.reward?.bars||{});
+  recordQuestAchievementProgress(q);
+  renderQuests();
+  renderWorkout();
+}
+function renderQuestCard(q,st){
+  const done=questDone(q), claimed=!!st.claimed[q.id], pct=Math.round((q.progress/q.target)*100);
+  return `<div class="quest-card ${done?'complete':''} ${claimed?'claimed':''}"><div class="quest-topline"><div><div class="quest-title">${done?'✓ ':''}${q.title}</div><p class="muted">${q.desc}</p></div><div class="quest-badges"><span class="quest-badge ${q.type}">${titleCaseQuest(q.type)}</span>${q.bonusClass?'<span class="quest-badge secret">Bonus Class</span>':''}${q.classKey&&q.classKey!=="general"?`<span class="quest-badge class">${titleCaseQuest(q.classKey)}</span>`:''}</div></div><div class="quest-progress-bar"><div class="quest-progress-fill" style="width:${pct}%"></div></div><div class="muted">${q.progress} / ${q.target}</div><div class="quest-reward">Reward: ${questRewardText(q)}</div><div class="quest-actions"><button data-claim-quest="${q.id}" ${!done||claimed?'disabled':''}>${claimed?'Claimed ✓':done?'Claim Reward':'In Progress'}</button></div></div>`;
+}
+function renderAchievementPanel(){
+  const s=achievementState();
+  const visible=ACHIEVEMENTS.filter(a=>a.type!=="hidden" || s.unlocked[a.id]);
+  const recent=s.recentUnlocks||[];
+  const recentHtml=recent.length?`<div class="quest-section"><h3>Secret Unlocks</h3>${recent.map(a=>`<div class="secret-unlock"><strong>${a.type==='hidden'?'Secret ':''}Achievement Unlocked: ${a.title}</strong><br><span class="muted">${a.desc}</span><div class="achievement-reward">+${a.xp} XP${a.bonus?' (25% bonus included)':''}</div></div>`).join('')}</div>`:'';
+  return `${recentHtml}<div class="quest-section"><h3>Achievement Progress</h3>${visible.map(a=>{const u=s.unlocked[a.id],xp=achievementXp(a);return `<div class="achievement-card ${u?'unlocked':''} ${a.type==='hidden'?'hidden':''}"><div class="achievement-title">${u?'✓ ':''}${a.type==='hidden'?'Secret: ':''}${a.title}</div><div class="muted">${a.desc}</div><div class="achievement-reward">${u?`Awarded +${u.xp} XP`:`Reward: +${xp} XP${a.bonus?' (25% bonus)':''}`}</div></div>`;}).join('')}</div>`;
+}
+
 function renderQuests(){
-  $("quests").innerHTML = `<div class="panel">
-    <h2>Quests</h2>
-    <p class="muted">Quest cleanup is next. Workout is now the clean daily-use screen.</p>
-    <div class="quest-card">
-      <h3>Daily Quest</h3>
-      <p>Complete today’s workout.</p>
-      <span class="focus-pill">+50 XP</span>
-    </div>
-  </div>`;
+  const quests=buildDailyQuests();
+  const st=questState();
+  const main=quests.filter(q=>q.type==="main");
+  const heroic=quests.filter(q=>q.type==="heroic");
+  const classQuests=quests.filter(q=>q.type==="class");
+  const claimed=Object.keys(st.claimed||{}).length;
+  $("quests").innerHTML = `<section class="quest-hero"><div class="quest-panel"><h2>Today’s Quests</h2><p class="muted">Complete main quests for steady progress. Heroic and bonus class quests are optional and worth higher XP.</p><div class="quest-section"><h3>Main Quests</h3><div class="quest-grid">${main.map(q=>renderQuestCard(q,st)).join("")}</div></div><div class="quest-section"><h3>Heroic Optional Quests</h3><div class="quest-grid">${heroic.map(q=>renderQuestCard(q,st)).join("")}</div></div><div class="quest-section"><h3>Class Quest</h3><div class="quest-grid">${classQuests.map(q=>renderQuestCard(q,st)).join("")}</div></div></div><aside class="quest-panel"><h2>Achievements</h2><p class="muted">Claimed today: ${claimed}</p><p class="muted">Hidden cross-class achievements unlock only after discovery and award 25% bonus XP.</p>${renderAchievementPanel()}</aside></section>`;
+  document.querySelectorAll("[data-claim-quest]").forEach(button=>button.addEventListener("click",()=>claimQuest(button.dataset.claimQuest)));
 }
 
 function renderSettings(){
@@ -1425,7 +1689,7 @@ function wireSettings(){
     }
   });
   $("retakeAssessment").addEventListener("click", () => {
-    alert("Assessment rebuild will be handled after Workout and Quests are stable.");
+    window.FitnessCoachAssessment?.open(true);
   });
 }
 
@@ -1436,6 +1700,9 @@ function bindNav(){
       document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
       button.classList.add("active");
       $(button.dataset.tab).classList.add("active");
+      if(button.dataset.tab === "quests") renderQuests();
+      if(button.dataset.tab === "workout") renderWorkout();
+      if(button.dataset.tab === "settings") renderSettings();
       window.scrollTo(0,0);
     });
   });

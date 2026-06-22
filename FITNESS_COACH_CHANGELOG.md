@@ -610,3 +610,47 @@ Security: no API keys, no embedded secrets, no external scripts
 - Completed set boxes turn green immediately.
 - Progress dots update immediately.
 - Exercise cards show complete state when all sets are logged.
+
+
+## Version 102 — Remove Duplicate Avatar Aliases
+### Cleanup
+- Removed duplicate long-form avatar filenames:
+  - `sage-male-v3.png`
+  - `sage-female-v3.png`
+  - and equivalent files for Guardian, Ranger, Phoenix, and Explorer.
+- Kept only the short canonical filenames:
+  - `sage-m-v3.png`
+  - `sage-f-v3.png`
+  - `guardian-m-v3.png`
+  - `guardian-f-v3.png`
+  - `ranger-m-v3.png`
+  - `ranger-f-v3.png`
+  - `phoenix-m-v3.png`
+  - `phoenix-f-v3.png`
+  - `explorer-m-v3.png`
+  - `explorer-f-v3.png`
+- Avatar loader continues using `${classKey}-${getAvatarStyle()}-v3.png`.
+
+## Version 103 — Quests + Achievements
+- Added two daily Main Quests.
+- Added Heroic Optional Quests with higher XP.
+- Added one Class Quest based on the user's class.
+- Added bonus cross-class quests.
+- Added visible achievements and hidden cross-class achievements.
+- Achievements grant XP; hidden/bonus achievements grant 25% extra XP.
+
+
+## Version 104 — First Use Assessment Restored
+### Onboarding
+- Added a real initial assessment overlay.
+- Automatically opens on first-time use when no user profile or character profile exists.
+- Saves user profile, character class, avatar style, goal, experience, schedule, equipment, and recovery priority.
+- Sets default body recovery to 100% ready for new users.
+
+### Settings
+- Retake Assessment now opens the same assessment form instead of a placeholder alert.
+
+## Version 105 — Assessment Button Hard Fix
+- Removed old Retake Assessment placeholder alert.
+- Retake Assessment opens the real assessment form.
+- Old partial profiles are treated as incomplete until assessmentCompletedAt exists.
